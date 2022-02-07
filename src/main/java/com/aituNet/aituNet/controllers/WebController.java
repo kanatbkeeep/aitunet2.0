@@ -19,4 +19,8 @@ public class WebController {
     public String register() {
         return "registration";
     }
+    @GetMapping("/sample")
+    public String sample() {
+        return "sample";
+    }
 }
