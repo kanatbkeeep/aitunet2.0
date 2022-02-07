@@ -1,0 +1,73 @@
+html {
+    font-family: "Montserrat", serif;
+}
+
+body {
+    margin: 0;
+    background-color: #F6F6F6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    width: calc(100% - 80px);
+    padding: 0 40px;
+    align-items: center;
+    background-color: white;
+}
+
+.logo {
+    text-decoration: none;
+    color: #4E5DA5;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.authorizationBox {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    width: 600px;
+    margin-top: 50px;
+    border-radius: 42px;
+}
+
+.text {
+    font-size: 48px;
+    font-weight: bold;
+    color: #4E5DA5;
+}
+
+::placeholder {
+    font-family: "Montserrat Thin", serif;
+}
+
+.authorizationBox input {
+    padding:5px 30px;
+    width: 400px;
+    font-size: 32px;
+    background-color: #F4F4F4;
+    border: none;
+    border-radius: 20px;
+    margin: 20px 0;
+}
+
+.authorizationBox button {
+    background-color: #4E5DA5;
+    border: none;
+    font-size: 32px;
+    color: white;
+    border-radius: 25px;
+    padding: 5px 45px;
+    margin: 20px 0 40px 0;
+}
+
+.authorizationBox a {
+    color: #505050;
+}
