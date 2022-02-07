@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../static/authorization.css">
+    <link rel="stylesheet" th:href="@{/authorization.css}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
     <section class="headerLeft">
-        <a href="index.html" class="logo">AITUnet</a>
+        <a href="/" class="logo">AITUnet</a>
     </section>
     <section class="headerRight">
     </section>
@@ -21,7 +21,7 @@
     <input type="text" placeholder="password">
     <input type="text" placeholder="retype password">
     <button type="submit">registration</button>
-    <a href="login.html">already have account</a>
+    <a href="loginUser">already have account</a>
 </section>
 </body>
 </html>
