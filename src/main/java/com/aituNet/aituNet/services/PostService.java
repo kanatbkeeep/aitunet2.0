@@ -1,4 +1,7 @@
-package com.aituNet.aituNet;
+package com.aituNet.aituNet.services;
+
+import com.aituNet.aituNet.entity.Post;
+import com.aituNet.aituNet.requests.PostRequest;
 
 import java.util.Date;
 import java.util.List;

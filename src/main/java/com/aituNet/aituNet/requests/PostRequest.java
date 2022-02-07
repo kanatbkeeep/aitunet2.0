@@ -1,4 +1,4 @@
-package com.aituNet.aituNet;
+package com.aituNet.aituNet.requests;
 
 import lombok.Data;
 import lombok.ToString;

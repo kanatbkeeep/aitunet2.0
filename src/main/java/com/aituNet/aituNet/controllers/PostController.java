@@ -1,6 +1,9 @@
-package com.aituNet.aituNet;
+package com.aituNet.aituNet.controllers;
 
 
+import com.aituNet.aituNet.entity.Post;
+import com.aituNet.aituNet.requests.PostRequest;
+import com.aituNet.aituNet.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

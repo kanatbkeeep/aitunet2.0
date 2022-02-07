@@ -1,4 +1,4 @@
-package com.aituNet.aituNet;
+package com.aituNet.aituNet.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

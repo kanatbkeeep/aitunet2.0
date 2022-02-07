@@ -1,5 +1,6 @@
-package com.aituNet.aituNet;
+package com.aituNet.aituNet.repositories;
 
+import com.aituNet.aituNet.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
