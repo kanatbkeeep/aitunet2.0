@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../static/index_style.css">
+    <link rel="stylesheet" th:href="@{/index_style.css}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
     <section class="headerLeft">
-        <a href="index.html" class="logo">AITUnet</a>
+        <a href="/" class="logo">AITUnet</a>
     </section>
     <section class="headerRight">
-        <a href="login.html" class="loginButton">sing in</a>
-        <a href="registration.html" class="loginButton">registration</a>
+        <a href="loginUser" class="loginButton">sing in</a>
+        <a href="registration" class="loginButton">registration</a>
     </section>
 </header>
 
