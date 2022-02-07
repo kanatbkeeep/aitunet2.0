@@ -33,7 +33,7 @@ public class PostController {
 
 
     @PostMapping("/delete")
-    public ResponseEntity deleteBook(@RequestBody PostRequest postRequest) {
+    public ResponseEntity deletePost(@RequestBody PostRequest postRequest) {
         boolean result = postService.deletePost(postRequest);
         if (result) {
             return new ResponseEntity("Post deleted", HttpStatus.OK);
@@ -52,7 +52,7 @@ public class PostController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updateBook(@RequestBody PostRequest postRequest) {
+    public ResponseEntity updatePost(@RequestBody PostRequest postRequest) {
         if(postRequest.getName().equals("name")) {
             Post postEdit = postService.getPostByName(postRequest.getName());
             postEdit.setName(postRequest.getName());
@@ -67,7 +67,7 @@ public class PostController {
         }
     }
     @GetMapping("/all")
-    public ResponseEntity aLLBooks() {
+    public ResponseEntity allPosts() {
         List<Post> posts = postService.getPosts();
         if (posts == null || posts.size() == 0) {
             return new ResponseEntity("Posts not found", HttpStatus.NOT_FOUND);
