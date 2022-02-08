@@ -1,0 +1,260 @@
+html {
+    font-family: "Montserrat", serif;
+}
+
+body {
+    margin: 0;
+    background-color: #F6F6F6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    width: calc(100% - 80px);
+    padding: 0 40px;
+    align-items: center;
+    background-color: white;
+}
+
+.logo {
+    text-decoration: none;
+    color: #4E5DA5;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.profileBox {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 42px;
+    width: 950px;
+    padding: 40px;
+    margin-top: 40px;
+}
+
+.profileTop {
+    display: flex;
+}
+
+.avatarBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profileAvatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 120px;
+    background-color: #4E5DA5;
+}
+
+.changeAvatar {
+    color: #4E5DA5;
+    text-decoration: underline;
+}
+
+.infoBox {
+    margin: 0 40px;
+}
+
+.profileUsername {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.aboutMeBox {
+    display: flex;
+    flex-direction: column;
+    background-color: #F4F4F4;
+    border-radius: 42px;
+    padding: 30px;
+}
+
+.aboutMeH {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.textInput {
+    font-size: 20px;
+    border: none;
+    border-radius: 20px;
+    outline:none;
+    width: 590px;
+    background-color: white;
+    padding: 5px 30px;
+}
+
+.friendsBox {
+    display: flex;
+}
+
+.profileBottom {
+    margin-left: 240px;
+    margin-top: 40px;
+}
+
+.friendsList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 22px;
+    margin: 0 20px;
+    color: #4E5DA5;
+    text-decoration: none;
+}
+
+.friendsWord {
+    text-decoration: underline;
+}
+
+.addPostBox {
+    width: 950px;
+    padding: 40px;
+    background-color: white;
+    border-radius: 42px;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.addPostWord {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.inputPost {
+    background-color: #ececec;
+    width: calc(100% - 80px);
+}
+
+.myPostsBox {
+    margin-top: 40px;
+}
+
+.myPostH {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    margin-left: 40px;
+}
+
+.postsList {
+    display: flex;
+    flex-direction: column;
+}
+
+.post {
+    background-color: #ffffff;
+    border-radius: 42px;
+    padding: 0 40px;
+    width: 950px;
+    margin-bottom: 40px;
+}
+
+.post:first-child {
+    margin-top: 20px;
+}
+
+.postTop {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.avatarUsername {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #686868;
+    font-size: 28px;
+    padding: 15px 0;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    background-color: #4E5DA5;
+    border-radius: 50px;
+}
+
+.username {
+    font-family: "Montserrat", serif;
+    margin: 15px;
+}
+
+.postTopLeft {
+    display: flex;
+    color: #686868;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+}
+
+.postMenu {
+    position: relative;
+    font-family: "Montserrat Black", serif;
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    margin-left: 20px;
+}
+
+.postHiddenMenu {
+    background-color: white;
+    position: absolute;
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    font-family: Montserrat, serif;
+    border-radius: 20px;
+    border: 1px solid #c7c7c7;
+    top: 70px;
+    left: 0;
+}
+
+.postMenu:hover > .postHiddenMenu  {
+    display: flex;
+}
+
+.edit {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    transition: background-color .3s;
+}
+
+.delete {
+    color: red;
+    padding: 5px 30px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    transition: background-color .3s;
+}
+
+.edit:hover, .delete:hover {
+    background-color: #d9d9d9;
+}
+
+.postBottom {
+    text-align: justify;
+    font-size: 28px;
+    margin: 20px 95px 40px 95px;
+}
+
+.postBottom:last-child {
+    margin-bottom: 20px;
+}
