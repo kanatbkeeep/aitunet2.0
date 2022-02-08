@@ -14,7 +14,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "usr")
+@Table(name="\"user\"")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
