@@ -14,12 +14,12 @@ import java.util.Collection;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name="\"user\"")
+@Table(name="usr")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(columnDefinition = "varchar(128)", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String username;
     private String password;
     private String aboutMe;
