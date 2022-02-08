@@ -14,4 +14,5 @@ public interface UserService {
     User getUserByUsername(String username);
     List<User> getUsers();
     void updateAboutMe(String username, String aboutMe);
+    boolean exitUser(String username);
 }
