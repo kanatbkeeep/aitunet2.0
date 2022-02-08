@@ -1,7 +1,8 @@
 package com.aituNet.aituNet.entities;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,9 +23,11 @@ public class User {
     private String username;
     private String password;
     private String aboutMe;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Role> roles = new ArrayList<>();
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Post> posts = new ArrayList<>();
 
     public User(String username, String password, String aboutMe, Collection<Role> roles, Collection<Post> posts) {
@@ -34,4 +37,5 @@ public class User {
         this.roles = roles;
         this.posts = posts;
     }
+
 }

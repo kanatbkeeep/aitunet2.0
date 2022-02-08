@@ -20,5 +20,4 @@ public class Post {
     private Long id;
     private String user;
     private String text;
-    private Date date;
 }
