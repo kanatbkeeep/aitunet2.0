@@ -23,6 +23,7 @@ public class AituNetApplication {
         return args -> {
             userService.saveUser(new User("asd", "asd", "sd", new ArrayList<>(), new ArrayList<>()));
 			userService.addRoleToUser("asd", "ROLE_USER");
+
         };
     }
 }
