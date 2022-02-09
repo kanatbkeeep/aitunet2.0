@@ -17,11 +17,49 @@
 
 <section class="authorizationBox">
     <div class="text">REGISTRATION</div>
-    <input type="text" placeholder="username">
-    <input type="text" placeholder="password">
-    <input type="text" placeholder="retype password">
-    <button type="submit">registration</button>
+    <input type="text" id="username" placeholder="username">
+    <input type="text" id="password1" placeholder="password">
+    <input type="text" id="password2" placeholder="retype password">
+    <div id="result_msg"></div>
+    <button type="submit" id="registrationButton">registration</button>
     <a href="loginUser">already have account</a>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+            $('#registrationButton').on('click', function () {
+                    let username = $('#username').val();
+                    let password1 = $('#password1').val();
+                    let password2 = $('#password2').val();
+
+                    if (password1 !== password2) {
+                        $('#result_msg').html('passwords don\'t match');
+                    } else if (password1 === '') {
+                        $('#result_msg').html('passwords cant be empty');
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            contentType: 'application/json',
+                            url: "user/registration",
+                            data: JSON.stringify({username: username, password: password1}),
+                            dataType: 'json',
+                            complete: function (result) {
+                                console.log(result.responseText);
+                                if (result.responseText == "user created") {
+                                    window.location.replace("/");
+                                } else {
+                                    $('#username').css("border", "1px solid red")
+                                    $('#result_msg').html('User already exist');
+                                }
+                            }
+                        })
+                    }
+                }
+            )
+        }
+    );
+</script>
 </body>
 </html>

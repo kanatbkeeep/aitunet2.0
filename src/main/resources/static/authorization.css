@@ -71,3 +71,7 @@ header {
 .authorizationBox a {
     color: #505050;
 }
+
+#result_msg {
+    color: red;
+}
