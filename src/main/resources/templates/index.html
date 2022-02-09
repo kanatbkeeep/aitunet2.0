@@ -12,6 +12,10 @@
         <a href="/" class="logo">AITUnet</a>
     </section>
     <section class="headerRight">
+        <a href="profile" class="miniProfile">
+            <div class="miniUsername">kanatos</div>
+            <div class="miniAvatar"></div>
+        </a>
         <a href="loginUser" class="loginButton">sing in</a>
         <a href="registration" class="loginButton">registration</a>
     </section>
@@ -44,5 +48,24 @@
         <div class="postBottom seeMore">sing in to see more</div>
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        let myCookie = getCookie("Authorization");
+        if (myCookie == null) {
+            $('.miniProfile').css("display", "none")
+        } else {
+            $('.loginButton').css("display", "none")
+        }
+    })
+</script>
 </body>
 </html>
