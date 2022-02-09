@@ -4,8 +4,8 @@ import com.aituNet.aituNet.entities.Role;
 import com.aituNet.aituNet.entities.User;
 import com.aituNet.aituNet.repo.RoleRepo;
 import com.aituNet.aituNet.repo.UserRepo;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,13 +19,18 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, @Lazy PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public User saveUser(User user) {
