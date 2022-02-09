@@ -1,11 +1,11 @@
 package com.aituNet.aituNet.entities;
 
+
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,16 +15,19 @@ import java.util.Collection;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name="pst")
-public class Post {
+@Table(name="cms")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String author;
-    private String textOfPost;
-    private Date date;
+    @Column(nullable = false)
+    private String text;
+    private String username;
+    private Long userId;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private Collection<Comment> comments = new ArrayList<>();
+    public Comment(String text, String username, Long userId) {
+        this.text = text;
+        this.username = username;
+        this.userId = userId;
+    }
 }
