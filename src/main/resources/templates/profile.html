@@ -29,6 +29,7 @@
                 <span role="textbox" class="textInput" contenteditable>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</span>
             </div>
         </div>
+        <button class="loginButton">sing in</button>
     </div>
 
     <div class="profileBottom">
@@ -123,6 +124,7 @@
         if (myCookie == null) {
             $('.profileUsername').css("display", "none")
         }
+
 
         let result = parseJwt(myCookie)
         $('.profileUsername').html(result.sub)
