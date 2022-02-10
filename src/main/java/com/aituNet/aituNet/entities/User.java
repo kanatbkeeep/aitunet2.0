@@ -26,16 +26,12 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Role> roles = new ArrayList<>();
-    @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private Collection<Post> posts = new ArrayList<>();
 
     public User(String username, String password, String aboutMe, Collection<Role> roles, Collection<Post> posts) {
         this.username = username;
         this.password = password;
         this.aboutMe = aboutMe;
         this.roles = roles;
-        this.posts = posts;
     }
 
 }

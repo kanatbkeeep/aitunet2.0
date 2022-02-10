@@ -20,8 +20,8 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String author;
+    private String authorId;
     private String textOfPost;
-    private Date date;
-
+    private String date;
+    private String time;
 }
