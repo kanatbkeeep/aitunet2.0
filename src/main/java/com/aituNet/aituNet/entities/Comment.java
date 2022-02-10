@@ -19,7 +19,7 @@ import java.util.Collection;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    privaaitunette Long id;
+    private Long id;
     @Column(nullable = false)
     private String text;
     private String username;
