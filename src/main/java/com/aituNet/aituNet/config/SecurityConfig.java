@@ -56,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/",
                 "/loginUser",
                 "/registration",
-                "/profile"
+                "/profile",
+                "/sample"
         ).permitAll();
 
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/**").permitAll();
