@@ -24,7 +24,4 @@ public class Post {
     private String textOfPost;
     private Date date;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private Collection<Comment> comments = new ArrayList<>();
 }
