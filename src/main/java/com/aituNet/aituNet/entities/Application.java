@@ -17,4 +17,5 @@ public class Application {
     private Long id;
     private Long sendBy;
     private Long sendTo;
+    // -----
 }

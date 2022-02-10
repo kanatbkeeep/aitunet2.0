@@ -18,4 +18,6 @@ public class Friends {
     private Long id;
     private Long ownerId;
     private Long friendId;
+    // -----
+
 }
