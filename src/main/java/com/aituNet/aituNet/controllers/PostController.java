@@ -1,6 +1,5 @@
 package com.aituNet.aituNet.controllers;
 
-
 import com.aituNet.aituNet.entities.Post;
 import com.aituNet.aituNet.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +19,6 @@ public class PostController {
     @PostMapping("/addPost")
     public ResponseEntity savePost(@RequestBody Post post) {
         postService.savePost(post);
-        return new ResponseEntity("Post created", HttpStatus.CREATED);
+        return new ResponseEntity("post created", HttpStatus.CREATED);
     }
-
-
 }

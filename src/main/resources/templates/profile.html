@@ -49,7 +49,7 @@
 
 <section class="addPostBox">
     <div class="addPostWord">add post</div>
-    <span role="textbox" class="textInput inputPost" contenteditable></span>
+    <span role="textbox" class="textInput inputPost" id="postContent" contenteditable></span>
     <button class="updateButton" id="addPost">add post</button>
 </section>
 
@@ -125,6 +125,7 @@
 
         let resultC = parseJwt(myCookie)
         let username = resultC.sub
+        let userId
         $('.profileUsername').html(username)
 
         if (getCookie("Authorization") != null) {
@@ -140,6 +141,7 @@
                     user_info = result;
                     console.log(result);
                     console.log(result);
+                    userId = result.id
                     $('#aboutMeInfo').html(result.aboutMe);
                 },
                 error: function (e) {
@@ -148,17 +150,44 @@
             });
         }
 
-        $('#updateAboutMe').on('click', function() {
+        $('#updateAboutMe').on('click', function () {
             let newValue = document.getElementById("aboutMeInfo").innerText;
             console.log(newValue)
             $.ajax({
-                type : "POST",
+                type: "POST",
                 headers: {'Authorization': myCookie},
                 contentType: 'application/json',
-                url : "user/updateAboutMe",
-                data : JSON.stringify({ username : username, newValue : newValue}),
-                dataType : 'json',
-                complete : function(result) {
+                url: "user/updateAboutMe",
+                data: JSON.stringify({username: username, newValue: newValue}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                }
+            });
+        });
+
+        let pad = function (num) {
+            return ('00' + num).slice(-2)
+        };
+
+        $('#addPost').on('click', function () {
+            let textOfPost = document.getElementById("postContent").innerText;
+            let date = new Date();
+            $.ajax({
+                type: "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "post/addPost",
+                data: JSON.stringify({
+                    textOfPost: textOfPost, authorId: userId, date: date.getUTCFullYear() + '-' +
+                        pad(date.getUTCMonth() + 1) + '-' +
+                        pad(date.getUTCDate()),
+                    time: pad(date.getUTCHours()) + ':' +
+                        pad(date.getUTCMinutes()) + ':' +
+                        pad(date.getUTCSeconds())
+                }),
+                dataType: 'json',
+                complete: function (result) {
                     console.log(result.responseText);
                 }
             });
