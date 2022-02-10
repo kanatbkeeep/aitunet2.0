@@ -19,15 +19,17 @@ import java.util.Collection;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    privaaitunette Long id;
     @Column(nullable = false)
     private String text;
     private String username;
+    private Long postId;
     private Long userId;
 
-    public Comment(String text, String username, Long userId) {
+    public Comment(String text, String username, Long userId, Long postId) {
         this.text = text;
         this.username = username;
         this.userId = userId;
+        this.postId = postId;
     }
 }
