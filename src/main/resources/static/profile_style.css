@@ -258,13 +258,16 @@ header {
 .postBottom:last-child {
     margin-bottom: 20px;
 }
-.loginButton {
+
+.updateButton {
+    width: 200px;
     text-decoration: none;
     color: #ffffff;
     background-color: #4E5DA5;
-    font-size: 28px;
-    font-weight: bold;
-    padding: 5px 15px;
-    border-radius: 45px;
-    margin: 0 20px;
+    font-size: 20px;
+    padding: 3px 5px;
+    border-radius: 25px;
+    margin-top: 20px;
+    align-self: end;
+    margin-right: 30px;
 }

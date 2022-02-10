@@ -23,13 +23,13 @@
         </div>
 
         <div class="infoBox">
-            <div class="profileUsername">kanatos</div>
+            <div class="profileUsername"></div>
             <div class="aboutMeBox">
                 <div class="aboutMeH">about me</div>
-                <span role="textbox" class="textInput" contenteditable>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</span>
+                <span role="textbox" class="textInput" contenteditable id="aboutMeInfo"></span>
+                <button class="updateButton" id="updateAboutMe">save info</button>
             </div>
         </div>
-        <button class="loginButton">sing in</button>
     </div>
 
     <div class="profileBottom">
@@ -50,6 +50,7 @@
 <section class="addPostBox">
     <div class="addPostWord">add post</div>
     <span role="textbox" class="textInput inputPost" contenteditable></span>
+    <button class="updateButton" id="addPost">add post</button>
 </section>
 
 <section class="myPostsBox">
@@ -103,31 +104,65 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+    function parseJwt(token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
     $(document).ready(function () {
-        function parseJwt(token) {
-            let base64Url = token.split('.')[1];
-            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-
-            return JSON.parse(jsonPayload);
-        }
-
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
         let myCookie = getCookie("Authorization");
-        if (myCookie == null) {
-            $('.profileUsername').css("display", "none")
+
+        let resultC = parseJwt(myCookie)
+        let username = resultC.sub
+        $('.profileUsername').html(username)
+
+        if (getCookie("Authorization") != null) {
+            let username = resultC.sub
+            $.ajax({
+                type: "GET",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "user/getUserByUsername",
+                data: {username: username},
+                dataType: 'json',
+                success: function (result) {
+                    user_info = result;
+                    console.log(result);
+                    console.log(result);
+                    $('#aboutMeInfo').html(result.aboutMe);
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                }
+            });
         }
 
-
-        let result = parseJwt(myCookie)
-        $('.profileUsername').html(result.sub)
+        $('#updateAboutMe').on('click', function() {
+            let newValue = document.getElementById("aboutMeInfo").innerText;
+            console.log(newValue)
+            $.ajax({
+                type : "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url : "user/updateAboutMe",
+                data : JSON.stringify({ username : username, newValue : newValue}),
+                dataType : 'json',
+                complete : function(result) {
+                    console.log(result.responseText);
+                }
+            });
+        });
     })
 
 </script>
