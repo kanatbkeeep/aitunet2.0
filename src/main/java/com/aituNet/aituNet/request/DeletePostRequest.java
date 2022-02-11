@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class GetByAuthorId {
-    Integer author_id;
+public class DeletePostRequest {
+    Integer post_id;
 }

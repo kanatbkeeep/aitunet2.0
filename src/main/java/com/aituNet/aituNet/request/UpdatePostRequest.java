@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class GetByAuthorId {
-    Integer author_id;
+public class UpdatePostRequest {
+    Integer post_id;
+    String newValue;
 }

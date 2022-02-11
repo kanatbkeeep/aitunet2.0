@@ -53,6 +53,20 @@
     <button class="updateButton" id="addPost">add post</button>
 </section>
 
+<section class="addPostBox">
+    <div class="addPostWord">edit post</div>
+    <span role="textbox" class="textInput inputPost" id="post_id" contenteditable></span>
+    <br>
+    <span role="textbox" class="textInput inputPost" id="editContent" contenteditable></span>
+    <button class="updateButton" id="editPost">edit post</button>
+</section>
+
+<section class="addPostBox">
+    <div class="addPostWord">delete post</div>
+    <span role="textbox" class="textInput inputPost" id="post_id2" contenteditable></span>
+    <button class="updateButton" id="deletePost">delete post</button>
+</section>
+
 <section class="myPostsBox">
     <div class="myPostH">my posts</div>
     <section class="postsList">
@@ -154,9 +168,38 @@
 
         //TODO: elhan
 
-        console.log(userId)
-        console.log(userId)
-        console.log(userId)
+        $('#editPost').on('click', function () {
+            let post_id = document.getElementById("post_id").innerText;
+            let newValue = document.getElementById("editContent").innerText;
+            console.log(newValue)
+            $.ajax({
+                type: "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "post/updatePost",
+                data: JSON.stringify({post_id: post_id, newValue: newValue}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                }
+            });
+        });
+
+        $('#deletePost').on('click', function () {
+            let post_id = document.getElementById("post_id2").innerText;
+            console.log(post_id)
+            $.ajax({
+                type: "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "post/deletePost",
+                data: JSON.stringify({post_id: post_id}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                }
+            });
+        });
 
         $.ajax({
             type: "GET",
@@ -170,7 +213,7 @@
                     let time = item.time;
                     if (userId == item.authorId) {
                         $('.postsList').append(
-                            '<div class="post">' +
+                            '<div class="post" id="">' +
                             '<div class="postTop">' +
                             '<a class="avatarUsername" href="#">' +
                             '<div class="avatar"></div>' +
@@ -204,6 +247,7 @@
             }
         })
     })
+
 
 </script>
 </body>
