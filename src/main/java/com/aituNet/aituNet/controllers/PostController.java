@@ -26,4 +26,9 @@ public class PostController {
     public ResponseEntity<List<Post>> getByAuthorId(@RequestBody(required = false) GetByAuthorId getByAuthorId) {
         return ResponseEntity.ok().body(postService.findByAuthorId(getByAuthorId.getAuthorId()));
     }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Post>> getAll() {
+        return ResponseEntity.ok().body(postService.findAll());
+    }
 }

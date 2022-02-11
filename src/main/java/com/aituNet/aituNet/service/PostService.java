@@ -11,4 +11,5 @@ public interface PostService {
     void updatePost(Integer id, String text);
     void deletePost(Integer id);
     List<Post> findByAuthorId(Integer id);
+    List<Post> findAll();
 }
