@@ -16,8 +16,8 @@ public class Friends {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long ownerId;
-    private Long friendId;
+    private Integer ownerId;
+    private Integer friendId;
     // -----
 
 }

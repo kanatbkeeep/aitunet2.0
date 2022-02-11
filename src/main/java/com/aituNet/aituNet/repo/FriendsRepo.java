@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface FriendsRepo extends JpaRepository<Friends, Long> {
 
-    List<Friends> findAllById(Integer id);
+    List<Friends> findAllByOwnerId(Integer id);
 }
