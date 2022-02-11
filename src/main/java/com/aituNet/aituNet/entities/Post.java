@@ -20,7 +20,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String authorId;
+    private Integer authorId;
     private String textOfPost;
     private String date;
     private String time;

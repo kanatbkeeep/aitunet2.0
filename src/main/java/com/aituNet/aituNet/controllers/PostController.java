@@ -1,14 +1,14 @@
 package com.aituNet.aituNet.controllers;
 
 import com.aituNet.aituNet.entities.Post;
+import com.aituNet.aituNet.request.GetByAuthorId;
 import com.aituNet.aituNet.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,5 +20,10 @@ public class PostController {
     public ResponseEntity savePost(@RequestBody Post post) {
         postService.savePost(post);
         return new ResponseEntity("post created", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getByAuthorId")
+    public ResponseEntity<List<Post>> getByAuthorId(@RequestBody(required = false) GetByAuthorId getByAuthorId) {
+        return ResponseEntity.ok().body(postService.findByAuthorId(getByAuthorId.getAuthorId()));
     }
 }

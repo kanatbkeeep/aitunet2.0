@@ -192,6 +192,54 @@
                 }
             });
         });
+
+
+        //TODO: elhan
+
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "post/getByAuthorId",
+            data: JSON.stringify({authorId: 1}),
+            dataType: 'json',
+            success: function (result) {
+                result.forEach((item, i) => {
+                    let text = item.textOfPost;
+                    let date = item.date;
+                    let time = item.time;
+                    $('.postsList').append(
+                        '<div class="post">' +
+                        '<div class="postTop">' +
+                        '<a class="avatarUsername" href="#">' +
+                        '<div class="avatar"></div>' +
+                        '<div class="username">' +
+                        username +
+                        '</div>' +
+                        '</a>' +
+                        '<div class="postTopLeft">' +
+                        '<div class="date">' +
+                        date + ' ' +
+                        time +
+                        '</div>' +
+                        '<div class="postMenu">. . .' +
+                        '<div class="postHiddenMenu">' +
+                        '<a href="#" class="edit">edit</a>' +
+                        '<a href="#" class="delete">delete</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="postBottom">' +
+                        text +
+                        '</div>' +
+                        '</div>'
+                    );
+                });
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+        })
     })
 
 </script>
