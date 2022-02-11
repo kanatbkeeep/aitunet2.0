@@ -56,49 +56,7 @@
 <section class="myPostsBox">
     <div class="myPostH">my posts</div>
     <section class="postsList">
-        <div class="post">
-            <div class="postTop">
-                <a class="avatarUsername" href="#">
-                    <div class="avatar"></div>
-                    <div class="username">kanatos</div>
-                </a>
-                <div class="postTopLeft">
-                    <div class="date">Today 18:10</div>
-                    <div class="postMenu">. . .
-                        <div class="postHiddenMenu">
-                            <a href="#" class="edit">edit</a>
-                            <a href="#" class="delete">delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="postBottom">Hello world!</div>
-        </div>
 
-        <div class="post">
-            <div class="postTop">
-                <a class="avatarUsername" href="#">
-                    <div class="avatar"></div>
-                    <div class="username">kanatos</div>
-                </a>
-                <div class="postTopLeft">
-                    <div class="date">Today 18:10</div>
-                    <div class="postMenu">. . .
-                        <div class="postHiddenMenu">
-                            <a href="#" class="edit">edit</a>
-                            <a href="#" class="delete">delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="postBottom">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in
-                the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with
-                desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </div>
-        </div>
     </section>
 </section>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -196,44 +154,49 @@
 
         //TODO: elhan
 
+        console.log(userId)
+        console.log(userId)
+        console.log(userId)
+
         $.ajax({
             type: "GET",
             contentType: 'application/json',
-            url: "post/getByAuthorId",
-            data: JSON.stringify({authorId: 1}),
+            url: "post/getAll",
             dataType: 'json',
             success: function (result) {
                 result.forEach((item, i) => {
                     let text = item.textOfPost;
                     let date = item.date;
                     let time = item.time;
-                    $('.postsList').append(
-                        '<div class="post">' +
-                        '<div class="postTop">' +
-                        '<a class="avatarUsername" href="#">' +
-                        '<div class="avatar"></div>' +
-                        '<div class="username">' +
-                        username +
-                        '</div>' +
-                        '</a>' +
-                        '<div class="postTopLeft">' +
-                        '<div class="date">' +
-                        date + ' ' +
-                        time +
-                        '</div>' +
-                        '<div class="postMenu">. . .' +
-                        '<div class="postHiddenMenu">' +
-                        '<a href="#" class="edit">edit</a>' +
-                        '<a href="#" class="delete">delete</a>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="postBottom">' +
-                        text +
-                        '</div>' +
-                        '</div>'
-                    );
+                    if (userId == item.authorId) {
+                        $('.postsList').append(
+                            '<div class="post">' +
+                            '<div class="postTop">' +
+                            '<a class="avatarUsername" href="#">' +
+                            '<div class="avatar"></div>' +
+                            '<div class="username">' +
+                            username +
+                            '</div>' +
+                            '</a>' +
+                            '<div class="postTopLeft">' +
+                            '<div class="date">' +
+                            date + ' ' +
+                            time +
+                            '</div>' +
+                            '<div class="postMenu">. . .' +
+                            '<div class="postHiddenMenu">' +
+                            '<a href="#" class="edit">edit</a>' +
+                            '<a href="#" class="delete">delete</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="postBottom">' +
+                            text +
+                            '</div>' +
+                            '</div>'
+                        );
+                    }
                 });
             },
             error: function (e) {
