@@ -9,5 +9,5 @@ import java.util.List;
 public interface FriendService {
     Friends addFriend(Friends friends);
     List<Friends> showFriends(Integer id);
-    void deleteFriend(Integer id);
+    void deleteFriend(Integer Id);
 }

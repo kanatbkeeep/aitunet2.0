@@ -15,7 +15,7 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long sendBy;
-    private Long sendTo;
+    private Integer sendBy;
+    private Integer sendTo;
     // -----
 }

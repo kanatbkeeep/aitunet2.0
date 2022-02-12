@@ -9,4 +9,7 @@ import java.util.List;
 public interface FriendsRepo extends JpaRepository<Friends, Long> {
 
     List<Friends> findAllByOwnerId(Integer id);
+    Friends findByFriendId(Integer id);
+    Friends findByOwnerIdAndFriendId(Integer ownerId, Integer friendId);
+
 }
