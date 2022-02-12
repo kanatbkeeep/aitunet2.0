@@ -25,6 +25,11 @@ public class WebController {
         return "profile";
     }
 
+    @GetMapping("/request")
+    public String request() {
+        return "request";
+    }
+
     @GetMapping("/sample")
     public String sample() {
         return "sample";

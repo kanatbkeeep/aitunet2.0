@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @Slf4j
@@ -31,5 +33,15 @@ public class PostServiceImpl implements PostService{
     public void deletePost(Integer id) {
         Post post = postRepo.findById(id.longValue()).orElse(null);
         postRepo.delete(post);
+    }
+
+    @Override
+    public List<Post> findByAuthorId(Integer id) {
+        return postRepo.findByAuthorId(id);
+    }
+
+    @Override
+    public List<Post> findAll() {
+        return postRepo.findAll();
     }
 }

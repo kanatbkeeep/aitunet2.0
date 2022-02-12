@@ -53,52 +53,24 @@
     <button class="updateButton" id="addPost">add post</button>
 </section>
 
+<section class="addPostBox">
+    <div class="addPostWord">edit post</div>
+    <span role="textbox" class="textInput inputPost" id="post_id" contenteditable></span>
+    <br>
+    <span role="textbox" class="textInput inputPost" id="editContent" contenteditable></span>
+    <button class="updateButton" id="editPost">edit post</button>
+</section>
+
+<section class="addPostBox">
+    <div class="addPostWord">delete post</div>
+    <span role="textbox" class="textInput inputPost" id="post_id2" contenteditable></span>
+    <button class="updateButton" id="deletePost">delete post</button>
+</section>
+
 <section class="myPostsBox">
     <div class="myPostH">my posts</div>
     <section class="postsList">
-        <div class="post">
-            <div class="postTop">
-                <a class="avatarUsername" href="#">
-                    <div class="avatar"></div>
-                    <div class="username">kanatos</div>
-                </a>
-                <div class="postTopLeft">
-                    <div class="date">Today 18:10</div>
-                    <div class="postMenu">. . .
-                        <div class="postHiddenMenu">
-                            <a href="#" class="edit">edit</a>
-                            <a href="#" class="delete">delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="postBottom">Hello world!</div>
-        </div>
 
-        <div class="post">
-            <div class="postTop">
-                <a class="avatarUsername" href="#">
-                    <div class="avatar"></div>
-                    <div class="username">kanatos</div>
-                </a>
-                <div class="postTopLeft">
-                    <div class="date">Today 18:10</div>
-                    <div class="postMenu">. . .
-                        <div class="postHiddenMenu">
-                            <a href="#" class="edit">edit</a>
-                            <a href="#" class="delete">delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="postBottom">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in
-                the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with
-                desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </div>
-        </div>
     </section>
 </section>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -192,7 +164,90 @@
                 }
             });
         });
+
+
+        //TODO: elhan
+
+        $('#editPost').on('click', function () {
+            let post_id = document.getElementById("post_id").innerText;
+            let newValue = document.getElementById("editContent").innerText;
+            console.log(newValue)
+            $.ajax({
+                type: "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "post/updatePost",
+                data: JSON.stringify({post_id: post_id, newValue: newValue}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                }
+            });
+        });
+
+        $('#deletePost').on('click', function () {
+            let post_id = document.getElementById("post_id2").innerText;
+            console.log(post_id)
+            $.ajax({
+                type: "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "post/deletePost",
+                data: JSON.stringify({post_id: post_id}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                }
+            });
+        });
+
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "post/getAll",
+            dataType: 'json',
+            success: function (result) {
+                result.forEach((item, i) => {
+                    let text = item.textOfPost;
+                    let date = item.date;
+                    let time = item.time;
+                    if (userId == item.authorId) {
+                        $('.postsList').append(
+                            '<div class="post" id="">' +
+                            '<div class="postTop">' +
+                            '<a class="avatarUsername" href="#">' +
+                            '<div class="avatar"></div>' +
+                            '<div class="username">' +
+                            username +
+                            '</div>' +
+                            '</a>' +
+                            '<div class="postTopLeft">' +
+                            '<div class="date">' +
+                            date + ' ' +
+                            time +
+                            '</div>' +
+                            '<div class="postMenu">. . .' +
+                            '<div class="postHiddenMenu">' +
+                            '<a href="#" class="edit">edit</a>' +
+                            '<a href="#" class="delete">delete</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="postBottom">' +
+                            text +
+                            '</div>' +
+                            '</div>'
+                        );
+                    }
+                });
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+        })
     })
+
 
 </script>
 </body>
