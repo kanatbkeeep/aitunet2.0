@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PostRepo extends JpaRepository<Post, Long> {
     List<Post> findByAuthorId(Integer authorId);
+
 }

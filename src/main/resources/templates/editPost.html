@@ -111,8 +111,6 @@
                 dataType: 'json',
                 success: function (result) {
                     user_info = result;
-                    console.log(result);
-                    console.log(result);
                     userId = result.id
                     $('#aboutMeInfo').html(result.aboutMe);
                 },
@@ -122,54 +120,11 @@
             });
         }
 
-        $('#updateAboutMe').on('click', function () {
-            let newValue = document.getElementById("aboutMeInfo").innerText;
-            console.log(newValue)
-            $.ajax({
-                type: "POST",
-                headers: {'Authorization': myCookie},
-                contentType: 'application/json',
-                url: "user/updateAboutMe",
-                data: JSON.stringify({username: username, newValue: newValue}),
-                dataType: 'json',
-                complete: function (result) {
-                    console.log(result.responseText);
-                }
-            });
-        });
-
-        let pad = function (num) {
-            return ('00' + num).slice(-2)
-        };
-
-        $('#addPost').on('click', function () {
-            let textOfPost = document.getElementById("postContent").innerText;
-            let date = new Date();
-            $.ajax({
-                type: "POST",
-                headers: {'Authorization': myCookie},
-                contentType: 'application/json',
-                url: "post/addPost",
-                data: JSON.stringify({
-                    textOfPost: textOfPost, authorId: userId, date: date.getUTCFullYear() + '-' +
-                        pad(date.getUTCMonth() + 1) + '-' +
-                        pad(date.getUTCDate()),
-                    time: pad(date.getUTCHours()) + ':' +
-                        pad(date.getUTCMinutes()) + ':' +
-                        pad(date.getUTCSeconds())
-                }),
-                dataType: 'json',
-                complete: function (result) {
-                    console.log(result.responseText);
-                }
-            });
-        });
-
 
         //TODO: elhan
 
         $('#editPost').on('click', function () {
-            let post_id = document.getElementById("post_id").innerText;
+            let postId = document.getElementById("postId").innerText;
             let newValue = document.getElementById("editContent").innerText;
             console.log(newValue)
             $.ajax({
@@ -177,7 +132,7 @@
                 headers: {'Authorization': myCookie},
                 contentType: 'application/json',
                 url: "post/updatePost",
-                data: JSON.stringify({post_id: post_id, newValue: newValue}),
+                data: JSON.stringify({postId: postId, newValue: newValue}),
                 dataType: 'json',
                 complete: function (result) {
                     console.log(result.responseText);
@@ -186,14 +141,12 @@
         });
 
         $('#deletePost').on('click', function () {
-            let post_id = document.getElementById("post_id2").innerText;
-            console.log(post_id)
             $.ajax({
                 type: "POST",
                 headers: {'Authorization': myCookie},
                 contentType: 'application/json',
                 url: "post/deletePost",
-                data: JSON.stringify({post_id: post_id}),
+                data: JSON.stringify({postId: postId}),
                 dataType: 'json',
                 complete: function (result) {
                     console.log(result.responseText);
@@ -201,54 +154,104 @@
             });
         });
 
+        //
+        // $.ajax({
+        //     type: "GET",
+        //     contentType: 'application/json',
+        //     url: "post/getAll",
+        //     dataType: 'json',
+        //     success: function (result) {
+        //         result.forEach((item, i) => {
+        //             let text = item.textOfPost;
+        //             let date = item.date;
+        //             let time = item.time;
+        //             if (userId == item.authorId) {
+        //                 $('.postsList').append(
+        //                     '<div class="post" id="">' +
+        //                     '<div class="postTop">' +
+        //                     '<a class="avatarUsername" href="#">' +
+        //                     '<div class="avatar"></div>' +
+        //                     '<div class="username">' +
+        //                     username +
+        //                     '</div>' +
+        //                     '</a>' +
+        //                     '<div class="postTopLeft">' +
+        //                     '<div class="date">' +
+        //                     date + ' ' +
+        //                     time +
+        //                     '</div>' +
+        //                     '<div class="postMenu">. . .' +
+        //                     '<div class="postHiddenMenu">' +
+        //                     '<a href="/editPost?id+'+ item.id + '" id="' + item.id + '" class="edit">edit</a>' +
+        //                     '<button class="deletePost">delete</button>' +
+        //                     '</div>' +
+        //                     '</div>' +
+        //                     '</div>' +
+        //                     '</div>' +
+        //                     '<div class="postBottom">' +
+        //                     text +
+        //                     '</div>' +
+        //                     '</div>'
+        //                 );
+        //             }
+        //         });
+        //     },
+        //     error: function (e) {
+        //         console.log("ERROR: ", e);
+        //     }
+        // })
+
+        //Todo
+
+
+        let postId = new URL(window.location.href).searchParams.get('id');
+        console.log(postId);
+
         $.ajax({
-            type: "GET",
-            contentType: 'application/json',
-            url: "post/getAll",
-            dataType: 'json',
-            success: function (result) {
-                result.forEach((item, i) => {
-                    let id = item.id;
+                type: "GET",
+                contentType: 'application/json',
+                url: "post/getPostById",
+                data: JSON.stringify({postId: 1}),
+                dataType: 'json',
+                success: function (result) {
+                    let id = result.id;
                     let text = item.textOfPost;
                     let date = item.date;
                     let time = item.time;
-                    if (userId == item.authorId) {
-                        $('.postsList').append(
-                            '<div class="post" id="">' +
-                            '<div class="postTop">' +
-                            '<a class="avatarUsername" href="#">' +
-                            '<div class="avatar"></div>' +
-                            '<div class="username">' +
-                            username +
-                            '</div>' +
-                            '</a>' +
-                            '<div class="postTopLeft">' +
-                            '<div class="date">' +
-                            date + ' ' +
-                            time +
-                            '</div>' +
-                            '<div class="postMenu">. . .' +
-                            '<div class="postHiddenMenu">' +
-                            '<a href="/editPost?id='+ id + '" id="' + id + '" class="edit">edit</a>' +
-                            '<a href="#" class="delete">delete</a>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="postBottom">' +
-                            text +
-                            '</div>' +
-                            '</div>'
-                        );
-                    }
-                });
-            },
-            error: function (e) {
-                console.log("ERROR: ", e);
+                    $('.postsList').append(
+                        '<div class="post" id="">' +
+                        '<div class="postTop">' +
+                        '<a class="avatarUsername" href="#">' +
+                        '<div class="avatar"></div>' +
+                        '<div class="username">' +
+                        username +
+                        '</div>' +
+                        '</a>' +
+                        '<div class="postTopLeft">' +
+                        '<div class="date">' +
+                        date + ' ' +
+                        time +
+                        '</div>' +
+                        '<div class="postMenu">. . .' +
+                        '<div class="postHiddenMenu">' +
+                        '<a href="/editPost?id=' + id + '" id="' + id + '" class="edit">edit</a>' +
+                        '<button class="deletePost">delete</button>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="postBottom">' +
+                        text +
+                        '</div>' +
+                        '</div>'
+                    );
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                }
             }
-        })
-    })
-
+        );
+    });
 
 </script>
 </body>

@@ -3,6 +3,7 @@ package com.aituNet.aituNet.controllers;
 import com.aituNet.aituNet.entities.Post;
 import com.aituNet.aituNet.request.DeletePostRequest;
 import com.aituNet.aituNet.request.GetByAuthorId;
+import com.aituNet.aituNet.request.GetPostById;
 import com.aituNet.aituNet.request.UpdatePostRequest;
 import com.aituNet.aituNet.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -26,19 +27,24 @@ public class PostController {
 
     @PostMapping("/updatePost")
     public ResponseEntity updatePost(@RequestBody UpdatePostRequest updatePostRequest) {
-        postService.updatePost(updatePostRequest.getPost_id(), updatePostRequest.getNewValue());
+        postService.updatePost(updatePostRequest.getPostId(), updatePostRequest.getNewValue());
         return new ResponseEntity("post is updated", HttpStatus.CREATED);
     }
 
     @PostMapping("/deletePost")
     public ResponseEntity deletePost(@RequestBody DeletePostRequest deletePostRequest) {
-        postService.deletePost(Integer.valueOf(deletePostRequest.getPost_id()));
+        postService.deletePost(Integer.valueOf(deletePostRequest.getPostId()));
         return new ResponseEntity("post is deleted", HttpStatus.CREATED);
     }
 
     @GetMapping("/getByAuthorId")
     public ResponseEntity<List<Post>> getByAuthorId(@RequestBody GetByAuthorId getByAuthorId) {
-        return ResponseEntity.ok().body(postService.findByAuthorId(getByAuthorId.getAuthor_id()));
+        return ResponseEntity.ok().body(postService.findByAuthorId(getByAuthorId.getAuthorId()));
+    }
+
+    @GetMapping("/getPostById")
+    public ResponseEntity<Post> getPostById(@RequestBody GetPostById getPostById) {
+        return ResponseEntity.ok().body(postService.findPostById(getPostById.getPostId()));
     }
 
     @GetMapping("/getAll")

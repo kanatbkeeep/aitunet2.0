@@ -7,8 +7,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @RequiredArgsConstructor
-public class GetByAuthorId {
-    Integer authorId;
+@AllArgsConstructor
+public class GetPostById {
+    Integer postId;
 }

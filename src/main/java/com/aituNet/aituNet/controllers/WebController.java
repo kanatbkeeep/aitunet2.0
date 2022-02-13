@@ -34,4 +34,8 @@ public class WebController {
     public String sample() {
         return "sample";
     }
+
+    @GetMapping("/editPost")
+    public String editPost() { return "editPost";
+    }
 }
