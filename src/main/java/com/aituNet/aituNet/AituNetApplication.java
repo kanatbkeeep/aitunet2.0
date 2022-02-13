@@ -18,12 +18,12 @@ public class AituNetApplication {
         SpringApplication.run(AituNetApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner run(UserService userService) {
-        return args -> {
-            userService.saveUser(new User("asd", "asd", "sd", new ArrayList<>(), new ArrayList<>()));
-			userService.addRoleToUser("asd", "ROLE_USER");
-
-        };
-    }
+//    @Bean
+//    CommandLineRunner run(UserService userService) {
+//        return args -> {
+//            userService.saveUser(new User("asd", "asd", "sd", new ArrayList<>(), new ArrayList<>()));
+//			userService.addRoleToUser("asd", "ROLE_USER");
+//
+//        };
+//    }
 }

@@ -191,19 +191,17 @@
 
         $('#addPost').on('click', function () {
             let textOfPost = document.getElementById("postContent").innerText;
-            let date = new Date();
+            let today = new Date();
             $.ajax({
                 type: "POST",
                 headers: {'Authorization': myCookie},
                 contentType: 'application/json',
                 url: "post/addPost",
                 data: JSON.stringify({
-                    textOfPost: textOfPost, authorId: userId, date: date.getUTCFullYear() + '-' +
-                        pad(date.getUTCMonth() + 1) + '-' +
-                        pad(date.getUTCDate()),
-                    time: pad(date.getUTCHours()) + ':' +
-                        pad(date.getUTCMinutes()) + ':' +
-                        pad(date.getUTCSeconds())
+                    textOfPost: textOfPost,
+                    authorId: userId,
+                    date: pad(today.getDate()) + '/' + pad((today.getMonth() + 1)) + '/' + today.getFullYear(),
+                    time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds())
                 }),
                 dataType: 'json',
                 complete: function (result) {
