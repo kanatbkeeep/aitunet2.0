@@ -64,7 +64,7 @@
             url: "post/getAll",
             dataType: 'json',
             success: function (result) {
-                result.forEach((item, i) => {
+                result.reverse().forEach((item, i) => {
                     let id = item.id;
                     let text = item.textOfPost;
                     let date = item.date;
