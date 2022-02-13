@@ -15,43 +15,12 @@
     </section>
 </header>
 
-<section class="profileBox">
-    <div class="profileTop">
-        <div class="avatarBox">
-            <div class="profileAvatar"></div>
-            <div class="changeAvatar">change photo</div>
-        </div>
-
-        <div class="infoBox">
-            <div class="profileUsername"></div>
-            <div class="aboutMeBox">
-                <div class="aboutMeH">about me</div>
-                <span role="textbox" class="textInput" contenteditable id="aboutMeInfo"></span>
-                <button class="updateButton" id="updateAboutMe">save info</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="profileBottom">
-        <div class="friendsBox">
-            <a href="#" class="friendsList">
-                <div class="friendsNumber">2</div>
-                <div class="friendsWord">friends</div>
-            </a>
-
-            <a href="#" class="friendsList">
-                <div class="friendsNumber">2</div>
-                <div class="friendsWord">request</div>
-            </a>
-        </div>
-    </div>
-</section>
-
 <section class="myPostsBox">
-    <div class="myPostH">my posts</div>
+    <div class="myPostH">Post edit page</div>
     <section class="postsList">
+        <button class="updateButton" id="editPost">edit post</button>
+        <button class="updateButton" id="deletePost" style="background-color: #f36060 !important;">delete post</button>
     </section>
-    <button class="updateButton" id="deletePost">delete post</button>
 </section>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -109,29 +78,16 @@
                                 let text = result.textOfPost;
                                 let date = result.date;
                                 let time = result.time;
-                                $('.postsList').append(
-                                    '<div class="post" id="">' +
+                                $('.postsList').prepend(
+                                    '<div class="post">' +
                                     '<div class="postTop">' +
                                     '<a class="avatarUsername" href="#">' +
                                     '<div class="avatar"></div>' +
-                                    '<div class="username">' +
-                                    username +
-                                    '</div>' +
+                                    '<div class="username">' + username +'</div>' +
                                     '</a>' +
-                                    '<div class="postTopLeft">' +
-                                    '<div class="date">' +
-                                    date + ' ' +
-                                    time +
+                                    '<div class="date">' + date + ' ' + time + '</div>' +
                                     '</div>' +
-                                    '<div class="postMenu">. . .' +
-                                    '<div class="postHiddenMenu">' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '<div class="postBottom">' +
-                                    text +
-                                    '</div>' +
+                                    '<div class="postBottom">' + text + '</div>' +
                                     '</div>'
                                 );
 

@@ -65,22 +65,33 @@
             dataType: 'json',
             success: function (result) {
                 result.reverse().forEach((item, i) => {
-                    let id = item.id;
                     let text = item.textOfPost;
                     let date = item.date;
                     let time = item.time;
-                    $('.postsList').append(
-                        '<div class="post">' +
-                            '<div class="postTop">' +
+                    $.ajax({
+                        type: "GET",
+                        contentType: 'application/json',
+                        url: "user/getUserById",
+                        data: {id: item.authorId},
+                        dataType: 'json',
+                        success: function (result2) {
+                            $('.postsList').prepend(
+                                '<div class="post">' +
+                                '<div class="postTop">' +
                                 '<a class="avatarUsername" href="#">' +
-                                    '<div class="avatar"></div>' +
-                                    '<div class="username">kanatos</div>' +
+                                '<div class="avatar"></div>' +
+                                '<div class="username">'+ result2.username +'</div>' +
                                 '</a>' +
                                 '<div class="date">' + date + ' ' + time + '</div>' +
-                            '</div>' +
-                            '<div class="postBottom">' + text + '</div>' +
-                        '</div>'
-                    );
+                                '</div>' +
+                                '<div class="postBottom">' + text + '</div>' +
+                                '</div>'
+                            );
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                        }
+                    })
                 });
             },
             error: function (e) {

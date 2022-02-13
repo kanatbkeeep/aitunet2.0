@@ -53,20 +53,6 @@
     <button class="updateButton" id="addPost">add post</button>
 </section>
 
-<section class="addPostBox">
-    <div class="addPostWord">edit post</div>
-    <span role="textbox" class="textInput inputPost" id="post_id" contenteditable></span>
-    <br>
-    <span role="textbox" class="textInput inputPost" id="editContent" contenteditable></span>
-    <button class="updateButton" id="editPost">edit post</button>
-</section>
-
-<section class="addPostBox">
-    <div class="addPostWord">delete post</div>
-    <span role="textbox" class="textInput inputPost" id="post_id2" contenteditable></span>
-    <button class="updateButton" id="deletePost">delete post</button>
-</section>
-
 <section class="myPostsBox">
     <div class="myPostH">my posts</div>
     <section class="postsList">
@@ -147,7 +133,6 @@
                                         '<div class="postMenu">. . .' +
                                         '<div class="postHiddenMenu">' +
                                         '<a href="/editPost?id=' + id + '"id="' + id + '" class="edit">edit</a>' +
-                                        '<a href="#" class="delete">delete</a>' +
                                         '</div>' +
                                         '</div>' +
                                         '</div>' +
@@ -242,6 +227,7 @@
                 dataType: 'json',
                 complete: function (result) {
                     console.log(result.responseText);
+                    document.location.reload();
                 }
             });
         });

@@ -20,6 +20,11 @@ header {
     background-color: white;
 }
 
+button, button:active, button:focus {
+    border: none;
+    outline: none;
+}
+
 .logo {
     text-decoration: none;
     color: #4E5DA5;
@@ -230,22 +235,13 @@ header {
 
 .edit {
     color: black;
-    width: 100%;
-    text-align: center;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    transition: background-color .3s;
-}
-
-.delete {
-    color: red;
     padding: 5px 30px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    text-align: center;
+    border-radius: 20px;
     transition: background-color .3s;
 }
 
-.edit:hover, .delete:hover {
+.edit:hover {
     background-color: #d9d9d9;
 }
 
