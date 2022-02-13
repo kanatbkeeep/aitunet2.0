@@ -20,18 +20,20 @@ public class ApplicationController {
     private final ApplicationServiceImpl applicationService;
 
     @PostMapping("/send")
-        public ResponseEntity SendRequest (@RequestBody Application application){
+    public ResponseEntity SendRequest(@RequestBody Application application) {
         applicationService.sendApplication(application);
-            return new ResponseEntity("request created", HttpStatus.CREATED);
-        }
-        @PostMapping("/cancel")
-    public  ResponseEntity CancelRequest(@RequestBody CancelApplication cancelApplication){
+        return new ResponseEntity("request created", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity CancelRequest(@RequestBody CancelApplication cancelApplication) {
         applicationService.deleteApplication(cancelApplication.getRequest_id());
-            return new ResponseEntity("request is deleted", HttpStatus.CREATED);
-        }
-        @GetMapping("/show")
-    public ResponseEntity ShowRequest(@RequestParam Integer sendToId){
-            log.info(sendToId.toString());
-            return ResponseEntity.ok().body(applicationService.showApplication(sendToId));
-        }
+        return new ResponseEntity("request is deleted", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/show")
+    public ResponseEntity ShowRequest(@RequestParam Integer sendToId) {
+        log.info(sendToId.toString());
+        return ResponseEntity.ok().body(applicationService.showApplication(sendToId));
+    }
 }

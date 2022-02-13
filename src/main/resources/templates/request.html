@@ -47,6 +47,45 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
+    function cancel(id) {
+        let rId= parseInt(id)
+        console.log("rId: "+rId)
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            url: "requests/cancel",
+            data: JSON.stringify({request_id: rId}),
+            dataType: 'json',
+            complete: function (result) {
+                console.log(result.responseText);
+                document. location. reload();
+            }
+        });
+    }
+    function accept(ownerId,friendId,rId) {
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            url: "friends/add",
+            data: JSON.stringify({ownerId: ownerId,friendId: friendId}),
+            dataType: 'json',
+            complete: function (result) {
+                console.log(result.responseText);
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "requests/cancel",
+                    data: JSON.stringify({request_id: rId}),
+                    dataType: 'json',
+                    complete: function (result) {
+                        console.log(result.responseText);
+                        document. location. reload();
+                    }
+                });
+            }
+        });
+    }
+
     $(document).ready(function () {
         let myCookie = getCookie("Authorization");
         let resultC = parseJwt(myCookie)
@@ -94,8 +133,8 @@
                                             '</div>' +
                                             '</div>' +
                                             '<div class="part2">' +
-                                            '<div class="accept">ACCEPT</div>' +
-                                            '<div class="cancel">CANCEL</div>' +
+                                            '<button class="accept" value="'+item1.id+'"onclick="accept('+item1.sendTo +','+item1.sendBy+',this.value)">ACCEPT</button>' +
+                                            '<button class="cancel" value="'+item1.id+'"onclick="cancel(this.value)">CANCEL</button>' +
                                             '</div>' +
                                             '</div>'
                                         );
@@ -147,15 +186,15 @@
         // });
 
 
-        // $('#deletePost').on('click', function () {
+        // $('.cancel').on('click', function () {
         //     let post_id = document.getElementById("post_id2").innerText;
         //     console.log(post_id)
         //     $.ajax({
         //         type: "POST",
         //         headers: {'Authorization': myCookie},
         //         contentType: 'application/json',
-        //         url: "post/deletePost",
-        //         data: JSON.stringify({post_id: post_id}),
+        //         url: "requests/cancel",
+        //         data: {id: post_id},
         //         dataType: 'json',
         //         complete: function (result) {
         //             console.log(result.responseText);
