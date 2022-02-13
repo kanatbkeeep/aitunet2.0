@@ -28,7 +28,7 @@ public class FriendsController {
         return new ResponseEntity("friend is deleted", HttpStatus.CREATED);
     }
     @GetMapping("/show")
-    public ResponseEntity ShowFriends(@RequestBody MyIdForFriendsRequest myIdForFriendsRequest){
-        return ResponseEntity.ok().body(friendService.showFriends(myIdForFriendsRequest.getMyId()));
+    public ResponseEntity ShowFriends(@RequestParam Integer id){
+        return ResponseEntity.ok().body(friendService.showFriends(id));
     }
 }

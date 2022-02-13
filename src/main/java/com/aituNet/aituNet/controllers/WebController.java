@@ -38,4 +38,7 @@ public class WebController {
     @GetMapping("/editPost")
     public String editPost() { return "editPost";
     }
+    @GetMapping("/friends")
+    public String friends() { return "friends";
+    }
 }

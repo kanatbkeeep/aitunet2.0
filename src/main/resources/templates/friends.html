@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/request_style.css}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <section class="headerLeft">
+        <a href="/" class="logo">AITUnet</a>
+    </section>
+    <section class="headerRight">
+        <a href="profile" class="miniProfile">
+            <div class="miniUsername"></div>
+            <div class="miniAvatar"></div>
+        </a>
+    </section>
+</header>
+
+<main class="main">
+    <div class="textRequest">
+        friends
+    </div>
+    <div class="requests">
+
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function parseJwt(token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function cancel(id) {
+        let rId= parseInt(id)
+        console.log("rId: "+rId)
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            url: "friends/delete",
+            data: JSON.stringify({friendId: rId}),
+            dataType: 'json',
+            complete: function (result) {
+                console.log(result.responseText);
+                document. location. reload();
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        let myCookie = getCookie("Authorization");
+        let resultC = parseJwt(myCookie)
+        let username = resultC.sub
+        let userId
+        $('.miniUsername').html(username)
+        if (getCookie("Authorization") != null) {
+            let username = resultC.sub
+            $.ajax({
+                type: "GET",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "user/getUserByUsername",
+                data: {username: username},
+                dataType: 'json',
+                success: function (result) {
+                    user_info = result;
+                    console.log(result);
+                    console.log(result);
+                    userId = result.id
+                    console.log("id1: " + userId)
+                    $.ajax({
+                        type: "GET",
+                        contentType: 'application/json',
+                        url: "friends/show",
+                        data: {id: result.id},
+                        dataType: 'json',
+                        success: function (result2) {
+                            result2.forEach((item1, i) => {
+                                $.ajax({
+                                    type: "GET",
+                                    contentType: 'application/json',
+                                    url: "user/getUserById",
+                                    data: {id: item1.friendId},
+                                    dataType: 'json',
+                                    success: function (result3) {
+                                        $('.requests').append(
+                                            '<div class="request">' +
+                                            '<div class="part1">' +
+                                            ' <div class="reAvatar"></div>' +
+                                            '<div class="reText">' +
+                                            '<div class="text1">' + result3.username + '</div>' +
+                                            '<div class="text2">is your the friend</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '<div class="part2">' +
+                                            '<button class="cancel" value="'+item1.id+'"onclick="cancel(this.value)">REMOVE</button>' +
+                                            '</div>' +
+                                            '</div>'
+                                        );
+
+                                    },
+                                    error: function (e) {
+                                        console.log("ERROR: ", e);
+                                    }
+                                })
+                            });
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                        }
+                    })
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                }
+            });
+        }
+
+
+    })
+
+
+</script>
+</body>
+</html>
