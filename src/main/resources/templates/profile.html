@@ -34,16 +34,17 @@
 
     <div class="profileBottom">
         <div class="friendsBox">
-            <a href="/friends" class="friendsList">
-                <div class="friendsNumber" id="num_friends"></div>
+            <a href="#" class="friendsList">
+                <div class="friendsNumber">2</div>
                 <div class="friendsWord">friends</div>
             </a>
 
-            <a href="/request" class="friendsList">
-                <div class="friendsNumber" id="num_request"></div>
+            <a href="#" class="friendsList">
+                <div class="friendsNumber">2</div>
                 <div class="friendsWord">request</div>
             </a>
         </div>
+        <button class="updateButton" id="logout" style="background-color: #f36060 !important;"> logout</button>
     </div>
 </section>
 
@@ -84,8 +85,6 @@
         let resultC = parseJwt(myCookie)
         let username = resultC.sub
         let userId
-        let numberOfrequest = 0
-        let numberOFfriends = 0
         $('.profileUsername').html(username)
 
         if (getCookie("Authorization") != null) {
@@ -110,7 +109,7 @@
                         url: "post/getAll",
                         dataType: 'json',
                         success: function (result) {
-                            result.reverse().forEach((item, i) => {
+                            result.forEach((item, i) => {
                                 let id = item.id;
                                 let text = item.textOfPost;
                                 let date = item.date;
@@ -149,40 +148,6 @@
                             console.log("ERROR: ", e);
                         }
                     })
-                    $.ajax({
-                        type: "GET",
-                        contentType: 'application/json',
-                        url: "requests/show",
-                        data: {sendToId: result.id},
-                        dataType: 'json',
-                        success: function (result2) {
-                            result2.forEach((item1, i) => {
-                              numberOfrequest = i+1
-                                console.log(numberOfrequest)
-                            });
-                            $('#num_request').text(numberOfrequest)
-                        },
-                        error: function (e) {
-                            console.log("ERROR: ", e);
-                        }
-                    })
-                    $.ajax({
-                        type: "GET",
-                        contentType: 'application/json',
-                        url: "friends/show",
-                        data: {id: result.id},
-                        dataType: 'json',
-                        success: function (result2) {
-                            result2.forEach((item1, i) => {
-                                numberOFfriends = i+1
-                                console.log(numberOFfriends)
-                            });
-                            $('#num_friends').text(numberOFfriends)
-                        },
-                        error: function (e) {
-                            console.log("ERROR: ", e);
-                        }
-                    })
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
@@ -212,62 +177,35 @@
 
         $('#addPost').on('click', function () {
             let textOfPost = document.getElementById("postContent").innerText;
-            let today = new Date();
+            let date = new Date();
             $.ajax({
                 type: "POST",
                 headers: {'Authorization': myCookie},
                 contentType: 'application/json',
                 url: "post/addPost",
                 data: JSON.stringify({
-                    textOfPost: textOfPost,
-                    authorId: userId,
-                    date: pad(today.getDate()) + '/' + pad((today.getMonth() + 1)) + '/' + today.getFullYear(),
-                    time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds())
+                    textOfPost: textOfPost, authorId: userId, date: date.getUTCFullYear() + '-' +
+                        pad(date.getUTCMonth() + 1) + '-' +
+                        pad(date.getUTCDate()),
+                    time: pad(date.getUTCHours()) + ':' +
+                        pad(date.getUTCMinutes()) + ':' +
+                        pad(date.getUTCSeconds())
                 }),
                 dataType: 'json',
                 complete: function (result) {
                     console.log(result.responseText);
-                    document.location.reload();
                 }
             });
         });
 
+        function eraseCookie(name) {
+            document.cookie = name + '=; Max-Age=-99999999;';
+        }
 
-        //TODO: elhan
-
-        $('#editPost').on('click', function () {
-            let post_id = document.getElementById("post_id").innerText;
-            let newValue = document.getElementById("editContent").innerText;
-            console.log(newValue)
-            $.ajax({
-                type: "POST",
-                headers: {'Authorization': myCookie},
-                contentType: 'application/json',
-                url: "post/updatePost",
-                data: JSON.stringify({post_id: post_id, newValue: newValue}),
-                dataType: 'json',
-                complete: function (result) {
-                    console.log(result.responseText);
-                }
-            });
+        $('#logout').on('click', function () {
+            eraseCookie("Authorization");
+            window.location.replace("/");
         });
-
-        $('#deletePost').on('click', function () {
-            let post_id = document.getElementById("post_id2").innerText;
-            console.log(post_id)
-            $.ajax({
-                type: "POST",
-                headers: {'Authorization': myCookie},
-                contentType: 'application/json',
-                url: "post/deletePost",
-                data: JSON.stringify({post_id: post_id}),
-                dataType: 'json',
-                complete: function (result) {
-                    console.log(result.responseText);
-                }
-            });
-        });
-
 
     })
 
