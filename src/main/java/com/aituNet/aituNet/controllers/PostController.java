@@ -3,10 +3,10 @@ package com.aituNet.aituNet.controllers;
 import com.aituNet.aituNet.entities.Post;
 import com.aituNet.aituNet.request.DeletePostRequest;
 import com.aituNet.aituNet.request.GetByAuthorId;
-import com.aituNet.aituNet.request.GetPostById;
 import com.aituNet.aituNet.request.UpdatePostRequest;
 import com.aituNet.aituNet.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
+@Slf4j
 public class PostController {
     private final PostService postService;
 
@@ -33,7 +34,7 @@ public class PostController {
 
     @PostMapping("/deletePost")
     public ResponseEntity deletePost(@RequestBody DeletePostRequest deletePostRequest) {
-        postService.deletePost(Integer.valueOf(deletePostRequest.getPostId()));
+        postService.deletePost((deletePostRequest.getPostId()));
         return new ResponseEntity("post is deleted", HttpStatus.CREATED);
     }
 
@@ -42,11 +43,11 @@ public class PostController {
         return ResponseEntity.ok().body(postService.findByAuthorId(getByAuthorId.getAuthorId()));
     }
 
-    @GetMapping("/getPostById")
-    public ResponseEntity<Post> getPostById(@RequestBody GetPostById getPostById) {
-        return ResponseEntity.ok().body(postService.findPostById(getPostById.getPostId()));
-    }
 
+    @GetMapping("/getPostByIdParam")
+    public ResponseEntity<Post> getPostById(@RequestParam Integer postId) {
+        return ResponseEntity.ok().body(postService.findPostById(postId));
+    }
     @GetMapping("/getAll")
     public ResponseEntity<List<Post>> getAll() {
         return ResponseEntity.ok().body(postService.findAll());

@@ -47,31 +47,11 @@
     </div>
 </section>
 
-<section class="addPostBox">
-    <div class="addPostWord">add post</div>
-    <span role="textbox" class="textInput inputPost" id="postContent" contenteditable></span>
-    <button class="updateButton" id="addPost">add post</button>
-</section>
-
-<section class="addPostBox">
-    <div class="addPostWord">edit post</div>
-    <span role="textbox" class="textInput inputPost" id="post_id" contenteditable></span>
-    <br>
-    <span role="textbox" class="textInput inputPost" id="editContent" contenteditable></span>
-    <button class="updateButton" id="editPost">edit post</button>
-</section>
-
-<section class="addPostBox">
-    <div class="addPostWord">delete post</div>
-    <span role="textbox" class="textInput inputPost" id="post_id2" contenteditable></span>
-    <button class="updateButton" id="deletePost">delete post</button>
-</section>
-
 <section class="myPostsBox">
     <div class="myPostH">my posts</div>
     <section class="postsList">
-
     </section>
+    <button class="updateButton" id="deletePost">delete post</button>
 </section>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -95,6 +75,9 @@
     $(document).ready(function () {
         let myCookie = getCookie("Authorization");
 
+        let postId = new URL(window.location.href).searchParams.get('id');
+        console.log(postId);
+
         let resultC = parseJwt(myCookie)
         let username = resultC.sub
         let userId
@@ -110,9 +93,54 @@
                 data: {username: username},
                 dataType: 'json',
                 success: function (result) {
+
                     user_info = result;
                     userId = result.id
                     $('#aboutMeInfo').html(result.aboutMe);
+
+                    $.ajax({
+                            type: "GET",
+                            contentType: 'application/json',
+                            url: "post/getPostByIdParam",
+                            data: {postId:postId },
+                            dataType: 'json',
+                            success: function (result) {
+                                let id = result.id;
+                                let text = result.textOfPost;
+                                let date = result.date;
+                                let time = result.time;
+                                $('.postsList').append(
+                                    '<div class="post" id="">' +
+                                    '<div class="postTop">' +
+                                    '<a class="avatarUsername" href="#">' +
+                                    '<div class="avatar"></div>' +
+                                    '<div class="username">' +
+                                    username +
+                                    '</div>' +
+                                    '</a>' +
+                                    '<div class="postTopLeft">' +
+                                    '<div class="date">' +
+                                    date + ' ' +
+                                    time +
+                                    '</div>' +
+                                    '<div class="postMenu">. . .' +
+                                    '<div class="postHiddenMenu">' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="postBottom">' +
+                                    text +
+                                    '</div>' +
+                                    '</div>'
+                                );
+
+                            },
+                            error: function (e) {
+                                console.log("ERROR: ", e);
+                            }
+                        }
+                    );
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
@@ -120,6 +148,19 @@
             });
         }
 
+        $('#deletePost').on('click', function () {
+            $.ajax({
+                type: "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "post/deletePost",
+                data: JSON.stringify({postId: postId}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                }
+            });
+        });
 
         //TODO: elhan
 
@@ -140,19 +181,7 @@
             });
         });
 
-        $('#deletePost').on('click', function () {
-            $.ajax({
-                type: "POST",
-                headers: {'Authorization': myCookie},
-                contentType: 'application/json',
-                url: "post/deletePost",
-                data: JSON.stringify({postId: postId}),
-                dataType: 'json',
-                complete: function (result) {
-                    console.log(result.responseText);
-                }
-            });
-        });
+
 
         //
         // $.ajax({
@@ -204,53 +233,52 @@
         //Todo
 
 
-        let postId = new URL(window.location.href).searchParams.get('id');
-        console.log(postId);
 
-        $.ajax({
-                type: "GET",
-                contentType: 'application/json',
-                url: "post/getPostById",
-                data: JSON.stringify({postId: 1}),
-                dataType: 'json',
-                success: function (result) {
-                    let id = result.id;
-                    let text = item.textOfPost;
-                    let date = item.date;
-                    let time = item.time;
-                    $('.postsList').append(
-                        '<div class="post" id="">' +
-                        '<div class="postTop">' +
-                        '<a class="avatarUsername" href="#">' +
-                        '<div class="avatar"></div>' +
-                        '<div class="username">' +
-                        username +
-                        '</div>' +
-                        '</a>' +
-                        '<div class="postTopLeft">' +
-                        '<div class="date">' +
-                        date + ' ' +
-                        time +
-                        '</div>' +
-                        '<div class="postMenu">. . .' +
-                        '<div class="postHiddenMenu">' +
-                        '<a href="/editPost?id=' + id + '" id="' + id + '" class="edit">edit</a>' +
-                        '<button class="deletePost">delete</button>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="postBottom">' +
-                        text +
-                        '</div>' +
-                        '</div>'
-                    );
-                },
-                error: function (e) {
-                    console.log("ERROR: ", e);
-                }
-            }
-        );
+        // $.ajax({
+        //         type: "GET",
+        //         contentType: 'application/json',
+        //         url: "post/getPostById",
+        //         data: JSON.stringify({postId:1}),
+        //         dataType: 'json',
+        //         success: function (result) {
+        //
+        //             let id = result.id;
+        //             let text = item.textOfPost;
+        //             let date = item.date;
+        //             let time = item.time;
+        //             $('.postsList').append(
+        //                 '<div class="post" id="">' +
+        //                 '<div class="postTop">' +
+        //                 '<a class="avatarUsername" href="#">' +
+        //                 '<div class="avatar"></div>' +
+        //                 '<div class="username">' +
+        //                 username +
+        //                 '</div>' +
+        //                 '</a>' +
+        //                 '<div class="postTopLeft">' +
+        //                 '<div class="date">' +
+        //                 date + ' ' +
+        //                 time +
+        //                 '</div>' +
+        //                 '<div class="postMenu">. . .' +
+        //                 '<div class="postHiddenMenu">' +
+        //                 '<a href="/editPost?id=' + id + '"id="' + id + '" class="edit">edit</a>' +
+        //                 '<button class="deletePost">delete</button>' +
+        //                 '</div>' +
+        //                 '</div>' +
+        //                 '</div>' +
+        //                 '</div>' +
+        //                 '<div class="postBottom">' +
+        //                 text +
+        //                 '</div>' +
+        //                 '</div>'
+        //             );
+        //         },
+        //         error: function (e) {
+        //             console.log("ERROR: ", e);
+        //         }
+        //     }
+
     });
 
 </script>
