@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ApplicationRepo extends JpaRepository<Application, Long> {
     List<Application> findAllBySendTo(Integer id);
+    List<Application> findBySendBy(Integer id);
 }

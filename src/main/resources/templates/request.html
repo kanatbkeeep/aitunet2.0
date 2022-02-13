@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../static/request_style.css">
+    <link rel="stylesheet" th:href="@{/request_style.css}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -13,7 +13,7 @@
     </section>
     <section class="headerRight">
         <a href="profile" class="miniProfile">
-            <div class="miniUsername">kanatos</div>
+            <div class="miniUsername"></div>
             <div class="miniAvatar"></div>
         </a>
     </section>
@@ -24,27 +24,149 @@
         requests
     </div>
     <div class="requests">
-        <div class="request">
-            <div class="part1">
-                <div class="reAvatar"></div>
-                <div class="reText">
-                    <div class="text1">kanatos</div>
-                    <div class="text2">wants to add you as a friend</div>
-                </div>
-            </div>
-            <div class="part2">
-                <div class="accept">ACCEPT</div>
-                <div class="cancel">CANCEL</div>
-            </div>
-        </div>
-        <div>
 
-        </div>
     </div>
 </main>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function parseJwt(token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
 
+        return JSON.parse(jsonPayload);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    $(document).ready(function () {
+        let myCookie = getCookie("Authorization");
+        let resultC = parseJwt(myCookie)
+        let username = resultC.sub
+        let userId
+        $('.miniUsername').html(username)
+        if (getCookie("Authorization") != null) {
+            let username = resultC.sub
+            $.ajax({
+                type: "GET",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "user/getUserByUsername",
+                data: {username: username},
+                dataType: 'json',
+                success: function (result) {
+                    user_info = result;
+                    console.log(result);
+                    console.log(result);
+                    userId = result.id
+                    console.log("id1: " + userId)
+                    $.ajax({
+                        type: "GET",
+                        contentType: 'application/json',
+                        url: "requests/show",
+                        data: {sendToId: result.id},
+                        dataType: 'json',
+                        success: function (result2) {
+                            result2.forEach((item1, i) => {
+                                $.ajax({
+                                    type: "GET",
+                                    contentType: 'application/json',
+                                    url: "user/getUserById",
+                                    data: {id: item1.sendBy},
+                                    dataType: 'json',
+                                    success: function (result3) {
+
+                                        $('.requests').append(
+                                            '<div class="request">' +
+                                            '<div class="part1">' +
+                                            ' <div class="reAvatar"></div>' +
+                                            '<div class="reText">' +
+                                            '<div class="text1">' + result3.username + '</div>' +
+                                            '<div class="text2">wants to add you as a friend</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '<div class="part2">' +
+                                            '<div class="accept">ACCEPT</div>' +
+                                            '<div class="cancel">CANCEL</div>' +
+                                            '</div>' +
+                                            '</div>'
+                                        );
+
+                                    },
+                                    error: function (e) {
+                                        console.log("ERROR: ", e);
+                                    }
+                                })
+                            });
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                        }
+                    })
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                }
+            });
+        }
+
+
+        // let pad = function (num) {
+        //     return ('00' + num).slice(-2)
+        // };
+
+        // $('#addPost').on('click', function () {
+        //     let textOfPost = document.getElementById("postContent").innerText;
+        //     let date = new Date();
+        //     $.ajax({
+        //         type: "POST",
+        //         headers: {'Authorization': myCookie},
+        //         contentType: 'application/json',
+        //         url: "post/addPost",
+        //         data: JSON.stringify({
+        //             textOfPost: textOfPost, authorId: userId, date: date.getUTCFullYear() + '-' +
+        //                 pad(date.getUTCMonth() + 1) + '-' +
+        //                 pad(date.getUTCDate()),
+        //             time: pad(date.getUTCHours()) + ':' +
+        //                 pad(date.getUTCMinutes()) + ':' +
+        //                 pad(date.getUTCSeconds())
+        //         }),
+        //         dataType: 'json',
+        //         complete: function (result) {
+        //             console.log(result.responseText);
+        //         }
+        //     });
+        // });
+
+
+        // $('#deletePost').on('click', function () {
+        //     let post_id = document.getElementById("post_id2").innerText;
+        //     console.log(post_id)
+        //     $.ajax({
+        //         type: "POST",
+        //         headers: {'Authorization': myCookie},
+        //         contentType: 'application/json',
+        //         url: "post/deletePost",
+        //         data: JSON.stringify({post_id: post_id}),
+        //         dataType: 'json',
+        //         complete: function (result) {
+        //             console.log(result.responseText);
+        //         }
+        //     });
+        // });
+
+
+    })
+
+
+</script>
 </body>
 </html>
