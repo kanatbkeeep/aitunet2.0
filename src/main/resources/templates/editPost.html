@@ -43,7 +43,6 @@
 
     $(document).ready(function () {
         let myCookie = getCookie("Authorization");
-
         let postId = new URL(window.location.href).searchParams.get('id');
         console.log(postId);
 
@@ -62,7 +61,6 @@
                 data: {username: username},
                 dataType: 'json',
                 success: function (result) {
-
                     user_info = result;
                     userId = result.id
                     $('#aboutMeInfo').html(result.aboutMe);
