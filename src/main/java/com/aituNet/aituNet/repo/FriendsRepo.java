@@ -13,4 +13,5 @@ public interface FriendsRepo extends JpaRepository<Friends, Long> {
     Friends findByOwnerIdAndFriendId(Integer ownerId, Integer friendId);
     void deleteByOwnerIdAndFriendId(Integer ownerId, Integer friendId);
 
+
 }

@@ -35,5 +35,10 @@ public class ApplicationServiceImpl implements ApplicationService{
         return applicationRepo.findAllBySendTo(id);
     }
 
+    @Override
+    public Application ShowBySendByAndSendTo(Integer by, Integer to) {
+        return applicationRepo.findApplicationBySendByAndSendTo(by,to);
+    }
+
 
 }

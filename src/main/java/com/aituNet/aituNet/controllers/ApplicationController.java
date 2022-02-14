@@ -36,4 +36,8 @@ public class ApplicationController {
         log.info(sendToId.toString());
         return ResponseEntity.ok().body(applicationService.showApplication(sendToId));
     }
+    @GetMapping("/showByAndTo")
+    public ResponseEntity ShowRequestByAndTo(@RequestParam Integer sendBy, Integer sendTo) {
+        return ResponseEntity.ok().body(applicationService.ShowBySendByAndSendTo(sendBy,sendTo));
+    }
 }

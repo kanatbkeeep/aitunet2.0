@@ -32,6 +32,10 @@ public class FriendsController {
     public ResponseEntity ShowFriends(@RequestParam Integer id){
         return ResponseEntity.ok().body(friendService.showFriends(id));
     }
+    @GetMapping("/showBoth")
+    public ResponseEntity ShowFriendsBoth(@RequestParam Integer ownerId,Integer friendId){
+        return ResponseEntity.ok().body(friendService.showBoth(ownerId,friendId));
+    }
     @PostMapping("/deleteBoth")
     public ResponseEntity DeleteFriendBoth(@RequestBody DeleteByOwnerAndFriendRequest deleteByOwnerAndFriendRequest){
         friendService.deleteByOwnerIdAndFriendId(deleteByOwnerAndFriendRequest.getOwnerId(),deleteByOwnerAndFriendRequest.getFriendId());

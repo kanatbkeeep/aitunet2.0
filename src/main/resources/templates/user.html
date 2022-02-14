@@ -63,11 +63,86 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
+
+    function send(sendById, sendToId) {
+
+        console.log("sendBy"+sendById+"sendTo"+sendToId);
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "friends/showBoth",
+            data: {ownerId:sendById,friendId:sendToId},
+            dataType: 'json',
+            success: function (result2) {
+                $('#sendRequest').text("YOUR FRIEND")
+            },
+            error: function (e) {
+                $.ajax({
+                    type: "GET",
+                    contentType: 'application/json',
+                    url: "friends/showBoth",
+                    data: {ownerId:sendToId,friendId:sendById},
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#sendRequest').text("YOUR FRIEND")
+                    },
+                    error: function (e) {
+                        $.ajax({
+                            type: "GET",
+                            contentType: 'application/json',
+                            url: "requests/showByAndTo",
+                            data: {sendBy: sendById, sendTo: sendToId},
+                            dataType: 'json',
+                            success: function (result) {
+                                $('#sendRequest').text("REQUEST WAS SENT")
+                            },
+                            error: function (e) {
+                                $.ajax({
+                                    type: "GET",
+                                    contentType: 'application/json',
+                                    url: "requests/showByAndTo",
+                                    data: {sendBy:sendToId , sendTo:sendById },
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        $('#sendRequest').text("REQUEST WAS SENT")
+                                    },
+                                    error: function (e) {
+                                        $('#sendRequest').on('click',function (){
+                                            $.ajax({
+                                                type: "POST",
+                                                contentType: 'application/json',
+                                                url: "requests/send",
+                                                data: JSON.stringify({sendBy:sendById , sendTo:sendToId}),
+                                                dataType: 'json',
+                                                success: function (result) {
+                                                },
+                                                error: function (e) {
+                                                    console.log("ERROR: ", e);
+                                                }
+                                            })
+                                            document. location. reload();
+                                        })
+                                        console.log("ERROR: ", e);
+                                    }
+                                })
+                                console.log("ERROR: ", e);
+                            }
+                        })
+                        console.log("ERROR: ", e);
+                    }
+                });
+                console.log("ERROR: ", e);
+            }
+        });
+
+
+    }
+
     $(document).ready(function () {
         let myCookie = getCookie("Authorization");
         let resultC = parseJwt(myCookie)
         let username = resultC.sub
-
+        let id = new URL(window.location.href).searchParams.get('id');
         $.ajax({
             type: "GET",
             contentType: 'application/json',
@@ -78,10 +153,26 @@
                 if (username == result.username) {
                     window.location.replace('/profile')
                 }
-
                 $('.profileUsername').html(result.username)
                 $('#aboutMe').html(result.aboutMe)
                 $('.myPostH').html(result.username + "'s post")
+
+                $.ajax({
+                    type: "GET",
+                    headers: {'Authorization': myCookie},
+                    contentType: 'application/json',
+                    url: "user/getUserByUsername",
+                    data: {username: username},
+                    dataType: 'json',
+                    success: function (result) {
+                        userId = result.id
+                        send(userId,new URL(window.location.href).searchParams.get('id'))
+                    },
+                    error: function (e) {
+                        console.log("ERROR: ", e);
+                    }
+                });
+
 
                 $.ajax({
                     type: "GET",
