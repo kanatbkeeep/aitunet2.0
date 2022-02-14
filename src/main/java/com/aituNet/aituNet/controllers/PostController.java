@@ -39,8 +39,8 @@ public class PostController {
     }
 
     @GetMapping("/getByAuthorId")
-    public ResponseEntity<List<Post>> getByAuthorId(@RequestBody GetByAuthorId getByAuthorId) {
-        return ResponseEntity.ok().body(postService.findByAuthorId(getByAuthorId.getAuthorId()));
+    public ResponseEntity<List<Post>> getByAuthorId(@RequestParam Integer authorId) {
+        return ResponseEntity.ok().body(postService.findByAuthorId(authorId));
     }
 
     @GetMapping("/getPostByIdParam")

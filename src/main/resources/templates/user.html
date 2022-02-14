@@ -23,10 +23,10 @@
         </div>
 
         <div class="infoBox">
-            <div class="profileUsername">kanatos</div>
+            <div class="profileUsername"></div>
             <div class="aboutMeBox">
                 <div class="aboutMeH">about me</div>
-                <span role="textbox" class="textInput">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</span>
+                <span role="textbox" class="textInput" id="aboutMe"></span>
             </div>
         </div>
     </div>
@@ -41,49 +41,7 @@
 <section class="myPostsBox">
     <div class="myPostH">username's posts</div>
     <section class="postsList">
-        <div class="post">
-            <div class="postTop">
-                <a class="avatarUsername" href="#">
-                    <div class="avatar"></div>
-                    <div class="username">kanatos</div>
-                </a>
-                <div class="postTopLeft">
-                    <div class="date">Today 18:10</div>
-                    <div class="postMenu">. . .
-                        <div class="postHiddenMenu">
-                            <a href="#" class="edit">edit</a>
-                            <a href="#" class="delete">delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="postBottom">Hello world!</div>
-        </div>
 
-        <div class="post">
-            <div class="postTop">
-                <a class="avatarUsername" href="#">
-                    <div class="avatar"></div>
-                    <div class="username">kanatos</div>
-                </a>
-                <div class="postTopLeft">
-                    <div class="date">Today 18:10</div>
-                    <div class="postMenu">. . .
-                        <div class="postHiddenMenu">
-                            <a href="#" class="edit">edit</a>
-                            <a href="#" class="delete">delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="postBottom">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in
-                the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with
-                desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </div>
-        </div>
     </section>
 </section>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -110,7 +68,56 @@
         let resultC = parseJwt(myCookie)
         let username = resultC.sub
 
-    })
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "user/getUserById",
+            data: {id: new URL(window.location.href).searchParams.get('id')},
+            dataType: 'json',
+            success: function (result) {
+                if (username == result.username) {
+                    window.location.replace('/profile')
+                }
+
+                $('.profileUsername').html(result.username)
+                $('#aboutMe').html(result.aboutMe)
+                $('.myPostH').html(result.username + "'s post")
+
+                $.ajax({
+                    type: "GET",
+                    contentType: 'application/json',
+                    url: "post/getByAuthorId",
+                    data: {authorId: result.id},
+                    dataType: 'json',
+                    success: function (result2) {
+                        result2.forEach(item => {
+                            let text = item.textOfPost;
+                            let date = item.date;
+                            let time = item.time;
+                            $('.postsList').prepend(
+                                '<div class="post">' +
+                                '<div class="postTop">' +
+                                '<a class="avatarUsername" href="/user?id=' + item.authorId + '" id="' + item.authorId + '">' +
+                                '<div class="avatar"></div>' +
+                                '<div class="username">' + result.username + '</div>' +
+                                '</a>' +
+                                '<div class="date">' + date + ' ' + time + '</div>' +
+                                '</div>' +
+                                '<div class="postBottom">' + text + '</div>' +
+                                '</div>'
+                            );
+                        });
+                    },
+                    error: function (e) {
+                        console.log("ERROR: ", e);
+                    }
+                })
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+        });
+    });
 </script>
 </body>
 </html>
