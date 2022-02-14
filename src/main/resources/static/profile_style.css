@@ -278,3 +278,12 @@ button, button:active, button:focus {
     align-self: end;
     margin-right: 30px;
 }
+
+#sendRequest {
+    background-color: #4E5DA5;
+    border: none;
+    font-size: 28px;
+    color: white;
+    border-radius: 25px;
+    padding: 5px 45px;
+}
