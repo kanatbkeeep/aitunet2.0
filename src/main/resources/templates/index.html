@@ -89,15 +89,14 @@
             }
         })
 
-        let myCookie = getCookie("Authorization");
-        if (myCookie == null) {
+        if (getCookie("Authorization") == null) {
             $('.miniProfile').css("display", "none")
         } else {
             $('.loginButton').css("display", "none")
         }
 
+        let myCookie = getCookie("Authorization");
         let result = parseJwt(myCookie)
-
         $('.miniUsername').html(result.sub)
     })
 </script>
