@@ -51,6 +51,21 @@
 <section class="addPostBox">
     <div class="addPostWord">add post</div>
     <span role="textbox" class="textInput inputPost" id="postContent" contenteditable></span>
+    <div class="switchBox">
+        <label class="switch">
+            <input type="checkbox" id="friendOnly">
+            <span class="slider round"></span>
+        </label>
+        <span class="switchText">friends only</span>
+    </div>
+
+    <div class="switchBox">
+        <label class="switch">
+            <input type="checkbox" id="authorizedOnly">
+            <span class="slider round"></span>
+        </label>
+        <span class="switchText">authorized only</span>
+    </div>
     <button class="updateButton" id="addPost">add post</button>
 </section>
 
@@ -231,7 +246,8 @@
                     textOfPost: textOfPost,
                     authorId: userId,
                     date: pad(today.getDate()) + '/' + pad((today.getMonth() + 1)) + '/' + today.getFullYear(),
-                    time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds())
+                    time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds()),
+                    friendsOnly : $('#friendOnly').is(":checked")
                 }),
                 dataType: 'json',
                 complete: function (result) {
