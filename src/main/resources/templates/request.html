@@ -70,6 +70,16 @@
             data: JSON.stringify({ownerId: ownerId,friendId: friendId}),
             dataType: 'json',
             complete: function (result) {
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "friends/add",
+                    data: JSON.stringify({ownerId: friendId,friendId: ownerId}),
+                    dataType: 'json',
+                    complete: function (result) {
+                        console.log(result.responseText);
+                    }
+                });
                 console.log(result.responseText);
                 $.ajax({
                     type: "POST",
@@ -84,6 +94,7 @@
                 });
             }
         });
+
     }
 
     $(document).ready(function () {
@@ -122,7 +133,6 @@
                                     data: {id: item1.sendBy},
                                     dataType: 'json',
                                     success: function (result3) {
-
                                         $('.requests').append(
                                             '<div class="request">' +
                                             '<div class="part1">' +
@@ -138,7 +148,6 @@
                                             '</div>' +
                                             '</div>'
                                         );
-
                                     },
                                     error: function (e) {
                                         console.log("ERROR: ", e);

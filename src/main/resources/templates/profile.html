@@ -35,13 +35,13 @@
 
     <div class="profileBottom">
         <div class="friendsBox">
-            <a href="#" class="friendsList">
-                <div class="friendsNumber">2</div>
+            <a href="/friends" class="friendsList">
+                <div class="friendsNumber" id="num_friends"></div>
                 <div class="friendsWord">friends</div>
             </a>
 
-            <a href="#" class="friendsList">
-                <div class="friendsNumber">2</div>
+            <a href="/request" class="friendsList">
+                <div class="friendsNumber" id="num_request"></div>
                 <div class="friendsWord">request</div>
             </a>
         </div>
@@ -93,6 +93,8 @@
         let resultC = parseJwt(myCookie)
         let username = resultC.sub
         let userId
+        let numberOfrequest = 0
+        let numberOFfriends = 0
         $('.profileUsername').html(username)
 
         if (getCookie("Authorization") != null) {
@@ -151,6 +153,40 @@
                                     );
                                 }
                             });
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                        }
+                    })
+                    $.ajax({
+                        type: "GET",
+                        contentType: 'application/json',
+                        url: "requests/show",
+                        data: {sendToId: result.id},
+                        dataType: 'json',
+                        success: function (result2) {
+                            result2.forEach((item1, i) => {
+                                numberOfrequest = i+1
+                                console.log(numberOfrequest)
+                            });
+                            $('#num_request').text(numberOfrequest)
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                        }
+                    })
+                    $.ajax({
+                        type: "GET",
+                        contentType: 'application/json',
+                        url: "friends/show",
+                        data: {id: result.id},
+                        dataType: 'json',
+                        success: function (result2) {
+                            result2.forEach((item1, i) => {
+                                numberOFfriends = i+1
+                                console.log(numberOFfriends)
+                            });
+                            $('#num_friends').text(numberOFfriends)
                         },
                         error: function (e) {
                             console.log("ERROR: ", e);
