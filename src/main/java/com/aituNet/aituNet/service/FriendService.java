@@ -10,4 +10,5 @@ public interface FriendService {
     Friends addFriend(Friends friends);
     List<Friends> showFriends(Integer id);
     void deleteFriend(Integer Id);
+    void deleteByOwnerIdAndFriendId(Integer owner, Integer friend);
 }

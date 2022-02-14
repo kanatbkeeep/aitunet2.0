@@ -47,18 +47,26 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    function cancel(id) {
-        let rId= parseInt(id)
-        console.log("rId: "+rId)
+    function cancel(ownerId,friendId) {
         $.ajax({
             type: "POST",
             contentType: 'application/json',
-            url: "friends/delete",
-            data: JSON.stringify({friendId: rId}),
+            url: "friends/deleteBoth",
+            data: JSON.stringify({ownerId:ownerId,friendId: friendId}),
             dataType: 'json',
             complete: function (result) {
                 console.log(result.responseText);
-                document. location. reload();
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json',
+                    url: "friends/deleteBoth",
+                    data: JSON.stringify({ownerId:friendId,friendId:ownerId }),
+                    dataType: 'json',
+                    complete: function (result) {
+                        console.log(result.responseText);
+                        document. location. reload();
+                    }
+                });
             }
         });
     }
@@ -110,7 +118,7 @@
                                             '</div>' +
                                             '</div>' +
                                             '<div class="part2">' +
-                                            '<button class="cancel" value="'+item1.id+'"onclick="cancel(this.value)">REMOVE</button>' +
+                                            '<button class="cancel" value="'+item1.id+'"onclick="cancel('+userId+','+item1.friendId+')">REMOVE</button>' +
                                             '</div>' +
                                             '</div>'
                                         );

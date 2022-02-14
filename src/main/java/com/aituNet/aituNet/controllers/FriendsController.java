@@ -2,6 +2,7 @@ package com.aituNet.aituNet.controllers;
 
 
 import com.aituNet.aituNet.entities.Friends;
+import com.aituNet.aituNet.request.DeleteByOwnerAndFriendRequest;
 import com.aituNet.aituNet.request.DeleteFriendRequest;
 import com.aituNet.aituNet.request.MyIdForFriendsRequest;
 import com.aituNet.aituNet.service.FriendServiceImpl;
@@ -30,5 +31,10 @@ public class FriendsController {
     @GetMapping("/show")
     public ResponseEntity ShowFriends(@RequestParam Integer id){
         return ResponseEntity.ok().body(friendService.showFriends(id));
+    }
+    @PostMapping("/deleteBoth")
+    public ResponseEntity DeleteFriendBoth(@RequestBody DeleteByOwnerAndFriendRequest deleteByOwnerAndFriendRequest){
+        friendService.deleteByOwnerIdAndFriendId(deleteByOwnerAndFriendRequest.getOwnerId(),deleteByOwnerAndFriendRequest.getFriendId());
+        return new ResponseEntity("friends are deleted", HttpStatus.CREATED);
     }
 }
