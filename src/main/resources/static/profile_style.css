@@ -32,6 +32,17 @@ button, button:active, button:focus {
     font-weight: bold;
 }
 
+.logout {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #d06060;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 45px;
+    margin: 0 20px;
+}
+
 .profileBox {
     display: flex;
     flex-direction: column;

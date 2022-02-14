@@ -43,15 +43,13 @@ public class PostController {
         return ResponseEntity.ok().body(postService.findByAuthorId(getByAuthorId.getAuthorId()));
     }
 
-
     @GetMapping("/getPostByIdParam")
     public ResponseEntity<Post> getPostById(@RequestParam Integer postId) {
         return ResponseEntity.ok().body(postService.findPostById(postId));
     }
+
     @GetMapping("/getAll")
     public ResponseEntity<List<Post>> getAll() {
         return ResponseEntity.ok().body(postService.findAll());
     }
-
-
 }
