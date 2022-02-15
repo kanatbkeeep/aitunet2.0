@@ -247,7 +247,8 @@
                     authorId: userId,
                     date: pad(today.getDate()) + '/' + pad((today.getMonth() + 1)) + '/' + today.getFullYear(),
                     time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds()),
-                    friendsOnly : $('#friendOnly').is(":checked")
+                    friendsOnly : $('#friendOnly').is(":checked"),
+                    authorizedOnly : $('#authorizedOnly').is(":checked")
                 }),
                 dataType: 'json',
                 complete: function (result) {

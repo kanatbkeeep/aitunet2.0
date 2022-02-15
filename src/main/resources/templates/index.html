@@ -47,15 +47,17 @@
     }
 
     $(document).ready(function () {
+        let result
+        let myUsername
+
         if (getCookie("Authorization") == null) {
             $('.miniProfile').css("display", "none")
         } else {
+            result = parseJwt(getCookie("Authorization"))
+            myUsername = result.sub
             $('.loginButton').css("display", "none")
         }
 
-        let myCookie = getCookie("Authorization");
-        let result = parseJwt(myCookie)
-        let myUsername = result.sub
         $('.miniUsername').html(myUsername)
 
         $.ajax({
@@ -77,6 +79,35 @@
                             dataType: 'json',
                             success: function (result2) {
                                 let userId = result2.id;
+                                if (userId == item.authorId) {
+                                    $.ajax({
+                                        type: "GET",
+                                        contentType: 'application/json',
+                                        url: "user/getUserById",
+                                        data: {id: item.authorId},
+                                        dataType: 'json',
+                                        success: function (result4) {
+                                            $('.postsList').prepend(
+                                                '<div class="post">' +
+                                                '<div class="postTop">' +
+                                                '<a class="avatarUsername" href="/user?id=' + item.authorId + '" id="' + item.authorId + '">' +
+                                                '<div class="avatar"></div>' +
+                                                '<div class="username">' + result4.username + '</div>' +
+                                                '</a>' +
+                                                '<div class="date">' + date + ' ' + time + '</div>' +
+                                                '</div>' +
+                                                '<div class="postBottom">' + text + '</div>' +
+                                                '</div>'
+                                            );
+                                            console.log(item)
+                                        },
+                                        error: function (e) {
+                                            console.log("ERROR: ", e);
+                                        }
+                                    })
+                                    return
+                                }
+
                                 $.ajax({
                                     type: "GET",
                                     contentType: 'application/json',
@@ -94,9 +125,9 @@
                                                 $('.postsList').prepend(
                                                     '<div class="post">' +
                                                     '<div class="postTop">' +
-                                                    '<a class="avatarUsername" href="/user?id='+ item.authorId + '" id="' + item.authorId + '">' +
+                                                    '<a class="avatarUsername" href="/user?id=' + item.authorId + '" id="' + item.authorId + '">' +
                                                     '<div class="avatar"></div>' +
-                                                    '<div class="username">'+ result4.username +'</div>' +
+                                                    '<div class="username">' + result4.username + '</div>' +
                                                     '</a>' +
                                                     '<div class="date">' + date + ' ' + time + '</div>' +
                                                     '</div>' +
@@ -119,33 +150,62 @@
                                 console.log("по юзернейму не нашел", e);
                             }
                         })
-
                     } else {
-                        $.ajax({
-                            type: "GET",
-                            contentType: 'application/json',
-                            url: "user/getUserById",
-                            data: {id: item.authorId},
-                            dataType: 'json',
-                            success: function (result2) {
-                                $('.postsList').prepend(
-                                    '<div class="post">' +
-                                    '<div class="postTop">' +
-                                    '<a class="avatarUsername" href="/user?id='+ item.authorId + '" id="' + item.authorId + '">' +
-                                    '<div class="avatar"></div>' +
-                                    '<div class="username">'+ result2.username +'</div>' +
-                                    '</a>' +
-                                    '<div class="date">' + date + ' ' + time + '</div>' +
-                                    '</div>' +
-                                    '<div class="postBottom">' + text + '</div>' +
-                                    '</div>'
-                                );
-                                console.log(item)
-                            },
-                            error: function (e) {
-                                console.log("ERROR: ", e);
+                        if (item.authorizedOnly) {
+                            if (getCookie("Authorization") != null) {
+                                $.ajax({
+                                    type: "GET",
+                                    contentType: 'application/json',
+                                    url: "user/getUserById",
+                                    data: {id: item.authorId},
+                                    dataType: 'json',
+                                    success: function (result2) {
+                                        $('.postsList').prepend(
+                                            '<div class="post">' +
+                                            '<div class="postTop">' +
+                                            '<a class="avatarUsername" href="/user?id=' + item.authorId + '" id="' + item.authorId + '">' +
+                                            '<div class="avatar"></div>' +
+                                            '<div class="username">' + result2.username + '</div>' +
+                                            '</a>' +
+                                            '<div class="date">' + date + ' ' + time + '</div>' +
+                                            '</div>' +
+                                            '<div class="postBottom">' + text + '</div>' +
+                                            '</div>'
+                                        );
+                                        console.log(item)
+                                    },
+                                    error: function (e) {
+                                        console.log("ERROR: ", e);
+                                    }
+                                });
                             }
-                        });
+                        } else {
+                            $.ajax({
+                                type: "GET",
+                                contentType: 'application/json',
+                                url: "user/getUserById",
+                                data: {id: item.authorId},
+                                dataType: 'json',
+                                success: function (result2) {
+                                    $('.postsList').prepend(
+                                        '<div class="post">' +
+                                        '<div class="postTop">' +
+                                        '<a class="avatarUsername" href="/user?id=' + item.authorId + '" id="' + item.authorId + '">' +
+                                        '<div class="avatar"></div>' +
+                                        '<div class="username">' + result2.username + '</div>' +
+                                        '</a>' +
+                                        '<div class="date">' + date + ' ' + time + '</div>' +
+                                        '</div>' +
+                                        '<div class="postBottom">' + text + '</div>' +
+                                        '</div>'
+                                    );
+                                    console.log(item)
+                                },
+                                error: function (e) {
+                                    console.log("ERROR: ", e);
+                                }
+                            });
+                        }
                     }
                 });
             },
