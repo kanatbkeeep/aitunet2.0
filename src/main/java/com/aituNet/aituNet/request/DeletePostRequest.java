@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class DeletePostRequest {
-    Integer post_id;
+    Integer postId;
 }

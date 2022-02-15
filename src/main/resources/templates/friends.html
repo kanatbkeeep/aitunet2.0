@@ -21,7 +21,7 @@
 
 <main class="main">
     <div class="textRequest">
-        requests
+        friends
     </div>
     <div class="requests">
 
@@ -47,45 +47,20 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    function cancel(id) {
-        let rId= parseInt(id)
-        console.log("rId: "+rId)
+    function cancel(ownerId,friendId) {
         $.ajax({
             type: "POST",
             contentType: 'application/json',
-            url: "requests/cancel",
-            data: JSON.stringify({request_id: rId}),
+            url: "friends/deleteBoth",
+            data: JSON.stringify({ownerId:ownerId,friendId: friendId}),
             dataType: 'json',
             complete: function (result) {
-                console.log(result.responseText);
-                document. location. reload();
-            }
-        });
-    }
-    function accept(ownerId,friendId,rId) {
-        $.ajax({
-            type: "POST",
-            contentType: 'application/json',
-            url: "friends/add",
-            data: JSON.stringify({ownerId: ownerId,friendId: friendId}),
-            dataType: 'json',
-            complete: function (result) {
-                $.ajax({
-                    type: "POST",
-                    contentType: 'application/json',
-                    url: "friends/add",
-                    data: JSON.stringify({ownerId: friendId,friendId: ownerId}),
-                    dataType: 'json',
-                    complete: function (result) {
-                        console.log(result.responseText);
-                    }
-                });
                 console.log(result.responseText);
                 $.ajax({
                     type: "POST",
                     contentType: 'application/json',
-                    url: "requests/cancel",
-                    data: JSON.stringify({request_id: rId}),
+                    url: "friends/deleteBoth",
+                    data: JSON.stringify({ownerId:friendId,friendId:ownerId }),
                     dataType: 'json',
                     complete: function (result) {
                         console.log(result.responseText);
@@ -94,8 +69,8 @@
                 });
             }
         });
-
     }
+
 
     $(document).ready(function () {
         let myCookie = getCookie("Authorization");
@@ -121,8 +96,8 @@
                     $.ajax({
                         type: "GET",
                         contentType: 'application/json',
-                        url: "requests/show",
-                        data: {sendToId: result.id},
+                        url: "friends/show",
+                        data: {id: result.id},
                         dataType: 'json',
                         success: function (result2) {
                             result2.forEach((item1, i) => {
@@ -130,7 +105,7 @@
                                     type: "GET",
                                     contentType: 'application/json',
                                     url: "user/getUserById",
-                                    data: {id: item1.sendBy},
+                                    data: {id: item1.friendId},
                                     dataType: 'json',
                                     success: function (result3) {
                                         $('.requests').append(
@@ -139,15 +114,15 @@
                                             ' <div class="reAvatar"></div>' +
                                             '<div class="reText">' +
                                             '<div class="text1">' + result3.username + '</div>' +
-                                            '<div class="text2">wants to add you as a friend</div>' +
+                                            '<div class="text2">is your the friend</div>' +
                                             '</div>' +
                                             '</div>' +
                                             '<div class="part2">' +
-                                            '<button class="accept" value="'+item1.id+'"onclick="accept('+item1.sendTo +','+item1.sendBy+',this.value)">ACCEPT</button>' +
-                                            '<button class="cancel" value="'+item1.id+'"onclick="cancel(this.value)">CANCEL</button>' +
+                                            '<button class="cancel" value="'+item1.id+'"onclick="cancel('+userId+','+item1.friendId+')">REMOVE</button>' +
                                             '</div>' +
                                             '</div>'
                                         );
+
                                     },
                                     error: function (e) {
                                         console.log("ERROR: ", e);
@@ -165,51 +140,6 @@
                 }
             });
         }
-
-
-        // let pad = function (num) {
-        //     return ('00' + num).slice(-2)
-        // };
-
-        // $('#addPost').on('click', function () {
-        //     let textOfPost = document.getElementById("postContent").innerText;
-        //     let date = new Date();
-        //     $.ajax({
-        //         type: "POST",
-        //         headers: {'Authorization': myCookie},
-        //         contentType: 'application/json',
-        //         url: "post/addPost",
-        //         data: JSON.stringify({
-        //             textOfPost: textOfPost, authorId: userId, date: date.getUTCFullYear() + '-' +
-        //                 pad(date.getUTCMonth() + 1) + '-' +
-        //                 pad(date.getUTCDate()),
-        //             time: pad(date.getUTCHours()) + ':' +
-        //                 pad(date.getUTCMinutes()) + ':' +
-        //                 pad(date.getUTCSeconds())
-        //         }),
-        //         dataType: 'json',
-        //         complete: function (result) {
-        //             console.log(result.responseText);
-        //         }
-        //     });
-        // });
-
-
-        // $('.cancel').on('click', function () {
-        //     let post_id = document.getElementById("post_id2").innerText;
-        //     console.log(post_id)
-        //     $.ajax({
-        //         type: "POST",
-        //         headers: {'Authorization': myCookie},
-        //         contentType: 'application/json',
-        //         url: "requests/cancel",
-        //         data: {id: post_id},
-        //         dataType: 'json',
-        //         complete: function (result) {
-        //             console.log(result.responseText);
-        //         }
-        //     });
-        // });
 
 
     })

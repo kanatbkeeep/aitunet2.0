@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/profile_style.css}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <section class="headerLeft">
+        <a href="/" class="logo">AITUnet</a>
+    </section>
+    <section class="headerRight">
+    </section>
+</header>
+
+<section class="profileBox">
+    <div class="profileTop">
+        <div class="avatarBox">
+            <div class="profileAvatar"></div>
+            <div class="changeAvatar">change photo</div>
+        </div>
+
+        <div class="infoBox">
+            <div class="profileUsername"></div>
+            <div class="aboutMeBox">
+                <div class="aboutMeH">about me</div>
+                <span role="textbox" class="textInput" id="aboutMe"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profileBottom">
+        <div class="friendsBox">
+            <button id="sendRequest">send a request</button>
+        </div>
+    </div>
+</section>
+
+<section class="myPostsBox">
+    <div class="myPostH">username's posts</div>
+    <section class="postsList">
+
+    </section>
+</section>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function parseJwt(token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+
+    function send(sendById, sendToId) {
+        console.log("sendBy" + sendById + "sendTo" + sendToId);
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "friends/showBoth",
+            data: {ownerId: sendById, friendId: sendToId},
+            dataType: 'json',
+            success: function (result2) {
+                $('#sendRequest').text("YOUR FRIEND")
+            },
+            error: function (e) {
+                $.ajax({
+                    type: "GET",
+                    contentType: 'application/json',
+                    url: "friends/showBoth",
+                    data: {ownerId: sendToId, friendId: sendById},
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#sendRequest').text("YOUR FRIEND")
+                    },
+                    error: function (e) {
+                        $.ajax({
+                            type: "GET",
+                            contentType: 'application/json',
+                            url: "requests/showByAndTo",
+                            data: {sendBy: sendById, sendTo: sendToId},
+                            dataType: 'json',
+                            success: function (result) {
+                                $('#sendRequest').text("REQUEST WAS SENT")
+                            },
+                            error: function (e) {
+                                $.ajax({
+                                    type: "GET",
+                                    contentType: 'application/json',
+                                    url: "requests/showByAndTo",
+                                    data: {sendBy: sendToId, sendTo: sendById},
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        $('#sendRequest').text("REQUEST WAS SENT")
+                                    },
+                                    error: function (e) {
+                                        $('#sendRequest').on('click', function () {
+                                            $.ajax({
+                                                type: "POST",
+                                                contentType: 'application/json',
+                                                url: "requests/send",
+                                                data: JSON.stringify({sendBy: sendById, sendTo: sendToId}),
+                                                dataType: 'json',
+                                                success: function (result) {
+                                                },
+                                                error: function (e) {
+                                                    console.log("ERROR: ", e);
+                                                }
+                                            })
+                                            document.location.reload();
+                                        })
+                                        console.log("ERROR: ", e);
+                                    }
+                                })
+                                console.log("ERROR: ", e);
+                            }
+                        })
+                        console.log("ERROR: ", e);
+                    }
+                });
+                console.log("ERROR: ", e);
+            }
+        });
+
+
+    }
+
+    $(document).ready(function () {
+        let myCookie = getCookie("Authorization");
+        let resultC = parseJwt(myCookie)
+        let myUsername = resultC.sub
+        let id = new URL(window.location.href).searchParams.get('id');
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "user/getUserById",
+            data: {id: new URL(window.location.href).searchParams.get('id')},
+            dataType: 'json',
+            success: function (result) {
+                if (myUsername == result.username) {
+                    window.location.replace('/profile')
+                }
+                $('.profileUsername').html(result.username)
+                $('#aboutMe').html(result.aboutMe)
+                $('.myPostH').html(result.username + "'s post")
+
+                $.ajax({
+                    type: "GET",
+                    headers: {'Authorization': myCookie},
+                    contentType: 'application/json',
+                    url: "user/getUserByUsername",
+                    data: {username: myUsername},
+                    dataType: 'json',
+                    success: function (result) {
+                        userId = result.id
+                        send(userId, new URL(window.location.href).searchParams.get('id'))
+                    },
+                    error: function (e) {
+                        console.log("ERROR: ", e);
+                    }
+                });
+
+                $.ajax({
+                    type: "GET",
+                    contentType: 'application/json',
+                    url: "post/getByAuthorId",
+                    data: {authorId: result.id},
+                    dataType: 'json',
+                    success: function (result) {
+                        result.forEach(item => {
+                            let text = item.textOfPost;
+                            let date = item.date;
+                            let time = item.time;
+                            if (item.friendsOnly) {
+                                $.ajax({
+                                    type: "GET",
+                                    contentType: 'application/json',
+                                    url: "user/getUserByUsername",
+                                    data: {username: myUsername},
+                                    dataType: 'json',
+                                    success: function (result2) {
+                                        let userId = result2.id;
+                                        $.ajax({
+                                            type: "GET",
+                                            contentType: 'application/json',
+                                            url: "friends/showBoth",
+                                            data: {ownerId: userId, friendId: item.authorId},
+                                            dataType: 'json',
+                                            success: function (result3) {
+                                                $.ajax({
+                                                    type: "GET",
+                                                    contentType: 'application/json',
+                                                    url: "user/getUserById",
+                                                    data: {id: item.authorId},
+                                                    dataType: 'json',
+                                                    success: function (result4) {
+                                                        $('.postsList').prepend(
+                                                            '<div class="post">' +
+                                                            '<div class="postTop">' +
+                                                            '<a class="avatarUsername" href="/user?id=' + item.authorId + '" id="' + item.authorId + '">' +
+                                                            '<div class="avatar"></div>' +
+                                                            '<div class="username">' + result4.username + '</div>' +
+                                                            '</a>' +
+                                                            '<div class="date">' + date + ' ' + time + '</div>' +
+                                                            '</div>' +
+                                                            '<div class="postBottom">' + text + '</div>' +
+                                                            '</div>'
+                                                        );
+                                                        console.log(item)
+                                                    },
+                                                    error: function (e) {
+                                                        console.log("ERROR: ", e);
+                                                    }
+                                                })
+                                            },
+                                            error: function (e) {
+                                                console.log("не друг", e);
+                                            }
+                                        })
+                                    },
+                                    error: function (e) {
+                                        console.log("по юзернейму не нашел", e);
+                                    }
+                                })
+
+                            } else {
+                                $.ajax({
+                                    type: "GET",
+                                    contentType: 'application/json',
+                                    url: "user/getUserById",
+                                    data: {id: item.authorId},
+                                    dataType: 'json',
+                                    success: function (result2) {
+                                        $('.postsList').prepend(
+                                            '<div class="post">' +
+                                            '<div class="postTop">' +
+                                            '<a class="avatarUsername" href="/user?id=' + item.authorId + '" id="' + item.authorId + '">' +
+                                            '<div class="avatar"></div>' +
+                                            '<div class="username">' + result2.username + '</div>' +
+                                            '</a>' +
+                                            '<div class="date">' + date + ' ' + time + '</div>' +
+                                            '</div>' +
+                                            '<div class="postBottom">' + text + '</div>' +
+                                            '</div>'
+                                        );
+                                        console.log(item)
+                                    },
+                                    error: function (e) {
+                                        console.log("ERROR: ", e);
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        console.log("ERROR: ", e);
+                    }
+                })
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+        });
+    });
+</script>
+</body>
+</html>

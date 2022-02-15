@@ -23,28 +23,6 @@
 
 <section class="postsList">
     <div class="post">
-        <div class="postTop">
-            <a class="avatarUsername" href="#">
-                <div class="avatar"></div>
-                <div class="username">kanatos</div>
-            </a>
-            <div class="date">Today 18:10</div>
-        </div>
-        <div class="postBottom">Hello world!</div>
-    </div>
-
-    <div class="post">
-        <div class="postTop">
-            <a class="avatarUsername" href="#">
-                <div class="avatar"></div>
-                <div class="username">kanatos</div>
-            </a>
-            <div class="date">Today 18:10</div>
-        </div>
-        <div class="postBottom">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
-    </div>
-
-    <div class="post">
         <div class="postBottom seeMore">sing in to see more</div>
     </div>
 </section>
@@ -52,33 +30,129 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+    function parseJwt(token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
     $(document).ready(function () {
-        function parseJwt (token) {
-            let base64Url = token.split('.')[1];
-            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-
-            return JSON.parse(jsonPayload);
-        }
-
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
-        let myCookie = getCookie("Authorization");
-        if (myCookie == null) {
+        if (getCookie("Authorization") == null) {
             $('.miniProfile').css("display", "none")
         } else {
             $('.loginButton').css("display", "none")
         }
 
+        let myCookie = getCookie("Authorization");
         let result = parseJwt(myCookie)
+        let myUsername = result.sub
+        $('.miniUsername').html(myUsername)
 
-        $('.miniUsername').html(result.sub)
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "post/getAll",
+            dataType: 'json',
+            success: function (result) {
+                result.forEach(item => {
+                    let text = item.textOfPost;
+                    let date = item.date;
+                    let time = item.time;
+                    if (item.friendsOnly) {
+                        $.ajax({
+                            type: "GET",
+                            contentType: 'application/json',
+                            url: "user/getUserByUsername",
+                            data: {username: myUsername},
+                            dataType: 'json',
+                            success: function (result2) {
+                                let userId = result2.id;
+                                $.ajax({
+                                    type: "GET",
+                                    contentType: 'application/json',
+                                    url: "friends/showBoth",
+                                    data: {ownerId: userId, friendId: item.authorId},
+                                    dataType: 'json',
+                                    success: function (result3) {
+                                        $.ajax({
+                                            type: "GET",
+                                            contentType: 'application/json',
+                                            url: "user/getUserById",
+                                            data: {id: item.authorId},
+                                            dataType: 'json',
+                                            success: function (result4) {
+                                                $('.postsList').prepend(
+                                                    '<div class="post">' +
+                                                    '<div class="postTop">' +
+                                                    '<a class="avatarUsername" href="/user?id='+ item.authorId + '" id="' + item.authorId + '">' +
+                                                    '<div class="avatar"></div>' +
+                                                    '<div class="username">'+ result4.username +'</div>' +
+                                                    '</a>' +
+                                                    '<div class="date">' + date + ' ' + time + '</div>' +
+                                                    '</div>' +
+                                                    '<div class="postBottom">' + text + '</div>' +
+                                                    '</div>'
+                                                );
+                                                console.log(item)
+                                            },
+                                            error: function (e) {
+                                                console.log("ERROR: ", e);
+                                            }
+                                        })
+                                    },
+                                    error: function (e) {
+                                        console.log("не друг", e);
+                                    }
+                                })
+                            },
+                            error: function (e) {
+                                console.log("по юзернейму не нашел", e);
+                            }
+                        })
+
+                    } else {
+                        $.ajax({
+                            type: "GET",
+                            contentType: 'application/json',
+                            url: "user/getUserById",
+                            data: {id: item.authorId},
+                            dataType: 'json',
+                            success: function (result2) {
+                                $('.postsList').prepend(
+                                    '<div class="post">' +
+                                    '<div class="postTop">' +
+                                    '<a class="avatarUsername" href="/user?id='+ item.authorId + '" id="' + item.authorId + '">' +
+                                    '<div class="avatar"></div>' +
+                                    '<div class="username">'+ result2.username +'</div>' +
+                                    '</a>' +
+                                    '<div class="date">' + date + ' ' + time + '</div>' +
+                                    '</div>' +
+                                    '<div class="postBottom">' + text + '</div>' +
+                                    '</div>'
+                                );
+                                console.log(item)
+                            },
+                            error: function (e) {
+                                console.log("ERROR: ", e);
+                            }
+                        });
+                    }
+                });
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+        });
     })
 </script>
 </body>

@@ -12,4 +12,5 @@ public interface PostService {
     void deletePost(Integer id);
     List<Post> findByAuthorId(Integer id);
     List<Post> findAll();
+    Post findPostById(Integer postId);
 }

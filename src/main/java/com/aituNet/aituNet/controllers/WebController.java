@@ -34,4 +34,16 @@ public class WebController {
     public String sample() {
         return "sample";
     }
+
+    @GetMapping("/editPost")
+    public String editPost() { return "editPost";
+    }
+
+    @GetMapping("/friends")
+    public String friends() { return "friends";
+    }
+
+    @GetMapping("/userPage")
+    public String user() { return "user";
+    }
 }

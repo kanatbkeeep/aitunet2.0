@@ -42,6 +42,11 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public List<Post> findAll() {
-        return postRepo.findAll();
+        return postRepo.findAllByOrderByIdAsc();
+    }
+
+    @Override
+    public Post findPostById(Integer postId) {
+        return postRepo.findById(postId.longValue()).orElse(null);
     }
 }

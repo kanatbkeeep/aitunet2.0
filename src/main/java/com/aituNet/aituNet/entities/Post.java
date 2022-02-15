@@ -1,6 +1,7 @@
 package com.aituNet.aituNet.entities;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -24,4 +25,5 @@ public class Post {
     private String textOfPost;
     private String date;
     private String time;
+    private boolean friendsOnly;
 }

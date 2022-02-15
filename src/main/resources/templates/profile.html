@@ -12,6 +12,7 @@
         <a href="/" class="logo">AITUnet</a>
     </section>
     <section class="headerRight">
+        <a href="/" class="logout">log out</a>
     </section>
 </header>
 
@@ -34,13 +35,13 @@
 
     <div class="profileBottom">
         <div class="friendsBox">
-            <a href="#" class="friendsList">
-                <div class="friendsNumber">2</div>
+            <a href="/friends" class="friendsList">
+                <div class="friendsNumber" id="num_friends"></div>
                 <div class="friendsWord">friends</div>
             </a>
 
-            <a href="#" class="friendsList">
-                <div class="friendsNumber">2</div>
+            <a href="/request" class="friendsList">
+                <div class="friendsNumber" id="num_request"></div>
                 <div class="friendsWord">request</div>
             </a>
         </div>
@@ -50,21 +51,22 @@
 <section class="addPostBox">
     <div class="addPostWord">add post</div>
     <span role="textbox" class="textInput inputPost" id="postContent" contenteditable></span>
+    <div class="switchBox">
+        <label class="switch">
+            <input type="checkbox" id="friendOnly">
+            <span class="slider round"></span>
+        </label>
+        <span class="switchText">friends only</span>
+    </div>
+
+    <div class="switchBox">
+        <label class="switch">
+            <input type="checkbox" id="authorizedOnly">
+            <span class="slider round"></span>
+        </label>
+        <span class="switchText">authorized only</span>
+    </div>
     <button class="updateButton" id="addPost">add post</button>
-</section>
-
-<section class="addPostBox">
-    <div class="addPostWord">edit post</div>
-    <span role="textbox" class="textInput inputPost" id="post_id" contenteditable></span>
-    <br>
-    <span role="textbox" class="textInput inputPost" id="editContent" contenteditable></span>
-    <button class="updateButton" id="editPost">edit post</button>
-</section>
-
-<section class="addPostBox">
-    <div class="addPostWord">delete post</div>
-    <span role="textbox" class="textInput inputPost" id="post_id2" contenteditable></span>
-    <button class="updateButton" id="deletePost">delete post</button>
 </section>
 
 <section class="myPostsBox">
@@ -92,12 +94,22 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
+    function eraseCookie(name) {
+        document.cookie = name + '=; Max-Age=-99999999;';
+    }
+
+    $('.logout').on('click', function () {
+        eraseCookie("Authorization");
+        window.location.replace("/");
+    });
+
     $(document).ready(function () {
         let myCookie = getCookie("Authorization");
-
         let resultC = parseJwt(myCookie)
         let username = resultC.sub
         let userId
+        let numberOfrequest = 0
+        let numberOFfriends = 0
         $('.profileUsername').html(username)
 
         if (getCookie("Authorization") != null) {
@@ -115,6 +127,86 @@
                     console.log(result);
                     userId = result.id
                     $('#aboutMeInfo').html(result.aboutMe);
+
+                    $.ajax({
+                        type: "GET",
+                        contentType: 'application/json',
+                        url: "post/getAll",
+                        dataType: 'json',
+                        success: function (result) {
+                            result.reverse().forEach((item, i) => {
+                                let id = item.id;
+                                let text = item.textOfPost;
+                                let date = item.date;
+                                let time = item.time;
+                                if (userId == item.authorId) {
+                                    $('.postsList').append(
+                                        '<div class="post" id="">' +
+                                        '<div class="postTop">' +
+                                        '<a class="avatarUsername" href="#">' +
+                                        '<div class="avatar"></div>' +
+                                        '<div class="username">' +
+                                        username +
+                                        '</div>' +
+                                        '</a>' +
+                                        '<div class="postTopLeft">' +
+                                        '<div class="date">' +
+                                        date + ' ' +
+                                        time +
+                                        '</div>' +
+                                        '<div class="postMenu">. . .' +
+                                        '<div class="postHiddenMenu">' +
+                                        '<a href="/editPost?id=' + id + '"id="' + id + '" class="edit">edit</a>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<div class="postBottom">' +
+                                        text +
+                                        '</div>' +
+                                        '</div>'
+                                    );
+                                }
+                            });
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                        }
+                    })
+                    $.ajax({
+                        type: "GET",
+                        contentType: 'application/json',
+                        url: "requests/show",
+                        data: {sendToId: result.id},
+                        dataType: 'json',
+                        success: function (result2) {
+                            result2.forEach((item1, i) => {
+                                numberOfrequest = i+1
+                                console.log(numberOfrequest)
+                            });
+                            $('#num_request').text(numberOfrequest)
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                        }
+                    })
+                    $.ajax({
+                        type: "GET",
+                        contentType: 'application/json',
+                        url: "friends/show",
+                        data: {id: result.id},
+                        dataType: 'json',
+                        success: function (result2) {
+                            result2.forEach((item1, i) => {
+                                numberOFfriends = i+1
+                                console.log(numberOFfriends)
+                            });
+                            $('#num_friends').text(numberOFfriends)
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                        }
+                    })
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
@@ -144,111 +236,27 @@
 
         $('#addPost').on('click', function () {
             let textOfPost = document.getElementById("postContent").innerText;
-            let date = new Date();
+            let today = new Date();
             $.ajax({
                 type: "POST",
                 headers: {'Authorization': myCookie},
                 contentType: 'application/json',
                 url: "post/addPost",
                 data: JSON.stringify({
-                    textOfPost: textOfPost, authorId: userId, date: date.getUTCFullYear() + '-' +
-                        pad(date.getUTCMonth() + 1) + '-' +
-                        pad(date.getUTCDate()),
-                    time: pad(date.getUTCHours()) + ':' +
-                        pad(date.getUTCMinutes()) + ':' +
-                        pad(date.getUTCSeconds())
+                    textOfPost: textOfPost,
+                    authorId: userId,
+                    date: pad(today.getDate()) + '/' + pad((today.getMonth() + 1)) + '/' + today.getFullYear(),
+                    time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds()),
+                    friendsOnly : $('#friendOnly').is(":checked")
                 }),
                 dataType: 'json',
                 complete: function (result) {
                     console.log(result.responseText);
+                    document.location.reload();
                 }
             });
         });
-
-
-        //TODO: elhan
-
-        $('#editPost').on('click', function () {
-            let post_id = document.getElementById("post_id").innerText;
-            let newValue = document.getElementById("editContent").innerText;
-            console.log(newValue)
-            $.ajax({
-                type: "POST",
-                headers: {'Authorization': myCookie},
-                contentType: 'application/json',
-                url: "post/updatePost",
-                data: JSON.stringify({post_id: post_id, newValue: newValue}),
-                dataType: 'json',
-                complete: function (result) {
-                    console.log(result.responseText);
-                }
-            });
-        });
-
-        $('#deletePost').on('click', function () {
-            let post_id = document.getElementById("post_id2").innerText;
-            console.log(post_id)
-            $.ajax({
-                type: "POST",
-                headers: {'Authorization': myCookie},
-                contentType: 'application/json',
-                url: "post/deletePost",
-                data: JSON.stringify({post_id: post_id}),
-                dataType: 'json',
-                complete: function (result) {
-                    console.log(result.responseText);
-                }
-            });
-        });
-
-        $.ajax({
-            type: "GET",
-            contentType: 'application/json',
-            url: "post/getAll",
-            dataType: 'json',
-            success: function (result) {
-                result.forEach((item, i) => {
-                    let text = item.textOfPost;
-                    let date = item.date;
-                    let time = item.time;
-                    if (userId == item.authorId) {
-                        $('.postsList').append(
-                            '<div class="post" id="">' +
-                            '<div class="postTop">' +
-                            '<a class="avatarUsername" href="#">' +
-                            '<div class="avatar"></div>' +
-                            '<div class="username">' +
-                            username +
-                            '</div>' +
-                            '</a>' +
-                            '<div class="postTopLeft">' +
-                            '<div class="date">' +
-                            date + ' ' +
-                            time +
-                            '</div>' +
-                            '<div class="postMenu">. . .' +
-                            '<div class="postHiddenMenu">' +
-                            '<a href="#" class="edit">edit</a>' +
-                            '<a href="#" class="delete">delete</a>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="postBottom">' +
-                            text +
-                            '</div>' +
-                            '</div>'
-                        );
-                    }
-                });
-            },
-            error: function (e) {
-                console.log("ERROR: ", e);
-            }
-        })
     })
-
-
 </script>
 </body>
 </html>

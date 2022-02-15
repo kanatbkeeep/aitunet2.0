@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/profile_style.css}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <section class="headerLeft">
+        <a href="/" class="logo">AITUnet</a>
+    </section>
+    <section class="headerRight">
+    </section>
+</header>
+
+<section class="myPostsBox">
+    <div class="myPostH">Post edit page</div>
+    <section class="postsList">
+        <button class="updateButton" id="editPost">edit post</button>
+        <button class="updateButton" id="deletePost" style="background-color: #f36060 !important;">delete post</button>
+    </section>
+</section>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function parseJwt(token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    $(document).ready(function () {
+        let myCookie = getCookie("Authorization");
+        let postId = new URL(window.location.href).searchParams.get('id');
+        console.log(postId);
+
+        let resultC = parseJwt(myCookie)
+        let username = resultC.sub
+        let userId
+        $('.profileUsername').html(username)
+
+        if (getCookie("Authorization") != null) {
+            let username = resultC.sub
+            $.ajax({
+                type: "GET",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "user/getUserByUsername",
+                data: {username: username},
+                dataType: 'json',
+                success: function (result) {
+                    user_info = result;
+                    userId = result.id
+                    $('#aboutMeInfo').html(result.aboutMe);
+
+                    $.ajax({
+                            type: "GET",
+                            contentType: 'application/json',
+                            url: "post/getPostByIdParam",
+                            data: {postId: postId},
+                            dataType: 'json',
+                            success: function (result) {
+                                let text = result.textOfPost;
+                                let date = result.date;
+                                let time = result.time;
+                                $('.postsList').prepend(
+                                    '<div class="post">' +
+                                    '<div class="postTop">' +
+                                    '<a class="avatarUsername" href="#">' +
+                                    '<div class="avatar"></div>' +
+                                    '<div class="username">' + username + '</div>' +
+                                    '</a>' +
+                                    '<div class="date">' + date + ' ' + time + '</div>' +
+                                    '</div>' +
+                                    '<div class="postBottom">' +
+                                    '<span role="textbox" className="textInput" contentEditable id="postText">' + text + '</span>' +
+                                    '</div>' +
+                                    '</div>'
+                                );
+
+                            },
+                            error: function (e) {
+                                console.log("ERROR: ", e);
+                            }
+                        }
+                    );
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                }
+            });
+        }
+
+        $('#deletePost').on('click', function () {
+            $.ajax({
+                type: "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "post/deletePost",
+                data: JSON.stringify({postId: postId}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                    window.location.replace("/profile");
+                }
+            });
+        });
+
+        $('#editPost').on('click', function () {
+            let newValue = document.getElementById("postText").innerText;
+            console.log(newValue)
+            $.ajax({
+                type: "POST",
+                headers: {'Authorization': myCookie},
+                contentType: 'application/json',
+                url: "post/updatePost",
+                data: JSON.stringify({postId: postId, newValue: newValue}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                    window.location.replace("/profile");
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.aituNet.aituNet.request;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class GetByAuthorId {
-    Integer authorId;
+public class MyIdForFriendsRequest {
+    Integer myId;
 }

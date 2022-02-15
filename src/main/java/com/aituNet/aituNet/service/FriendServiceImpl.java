@@ -38,4 +38,14 @@ public class FriendServiceImpl implements FriendService{
           friendsRepo.delete(friend);
       }
     }
+
+    @Override
+    public void deleteByOwnerIdAndFriendId(Integer owner, Integer friend) {
+        friendsRepo.deleteByOwnerIdAndFriendId(owner,friend);
+    }
+
+    @Override
+    public Friends showBoth(Integer owner, Integer friend) {
+        return friendsRepo.findByOwnerIdAndFriendId(owner,friend);
+    }
 }

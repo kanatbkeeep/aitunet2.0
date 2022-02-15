@@ -6,6 +6,7 @@ import com.aituNet.aituNet.request.GetByAuthorId;
 import com.aituNet.aituNet.request.UpdatePostRequest;
 import com.aituNet.aituNet.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
+@Slf4j
 public class PostController {
     private final PostService postService;
 
@@ -26,25 +28,28 @@ public class PostController {
 
     @PostMapping("/updatePost")
     public ResponseEntity updatePost(@RequestBody UpdatePostRequest updatePostRequest) {
-        postService.updatePost(updatePostRequest.getPost_id(), updatePostRequest.getNewValue());
+        postService.updatePost(updatePostRequest.getPostId(), updatePostRequest.getNewValue());
         return new ResponseEntity("post is updated", HttpStatus.CREATED);
     }
 
     @PostMapping("/deletePost")
     public ResponseEntity deletePost(@RequestBody DeletePostRequest deletePostRequest) {
-        postService.deletePost(Integer.valueOf(deletePostRequest.getPost_id()));
+        postService.deletePost((deletePostRequest.getPostId()));
         return new ResponseEntity("post is deleted", HttpStatus.CREATED);
     }
 
     @GetMapping("/getByAuthorId")
-    public ResponseEntity<List<Post>> getByAuthorId(@RequestBody GetByAuthorId getByAuthorId) {
-        return ResponseEntity.ok().body(postService.findByAuthorId(getByAuthorId.getAuthor_id()));
+    public ResponseEntity<List<Post>> getByAuthorId(@RequestParam Integer authorId) {
+        return ResponseEntity.ok().body(postService.findByAuthorId(authorId));
+    }
+
+    @GetMapping("/getPostByIdParam")
+    public ResponseEntity<Post> getPostById(@RequestParam Integer postId) {
+        return ResponseEntity.ok().body(postService.findPostById(postId));
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Post>> getAll() {
         return ResponseEntity.ok().body(postService.findAll());
     }
-
-
 }

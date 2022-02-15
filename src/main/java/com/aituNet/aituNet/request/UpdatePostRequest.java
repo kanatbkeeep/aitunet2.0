@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class UpdatePostRequest {
-    Integer post_id;
+    Integer postId;
     String newValue;
 }

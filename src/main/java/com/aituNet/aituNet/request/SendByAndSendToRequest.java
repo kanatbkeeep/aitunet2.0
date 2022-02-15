@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class GetByAuthorId {
-    Integer authorId;
+public class SendByAndSendToRequest {
+    Integer sendBy;
+    Integer sendTo;
 }

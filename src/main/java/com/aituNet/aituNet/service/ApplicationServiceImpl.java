@@ -26,16 +26,19 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public void deleteApplication(Integer id) {
-        Application application = applicationRepo.findById(id.longValue()).orElse(null);
-        if(application == null){
+        applicationRepo.deleteById(id.longValue());
 
-        }else{
-            applicationRepo.delete(application);
-        }
     }
 
     @Override
     public List<Application> showApplication(Integer id) {
         return applicationRepo.findAllBySendTo(id);
     }
+
+    @Override
+    public Application ShowBySendByAndSendTo(Integer by, Integer to) {
+        return applicationRepo.findApplicationBySendByAndSendTo(by,to);
+    }
+
+
 }
