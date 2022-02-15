@@ -26,6 +26,8 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Role> roles = new ArrayList<>();
+    private boolean friendOnlyPage;
+    private boolean authorizedOnlyPage;
 
     public User(String username, String password, String aboutMe, Collection<Role> roles, Collection<Post> posts) {
         this.username = username;

@@ -1,6 +1,7 @@
 package com.aituNet.aituNet.controllers;
 
 import com.aituNet.aituNet.entities.User;
+import com.aituNet.aituNet.request.PageVisibility;
 import com.aituNet.aituNet.request.UpdateAboutMeRequest;
 import com.aituNet.aituNet.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,11 @@ public class UserController {
     @GetMapping("/getUserById")
     public ResponseEntity<User>getUserById(@RequestParam Integer id) {
         return ResponseEntity.ok().body(userService.getUserById(id));
+    }
+
+    @PostMapping("/updateVisibility")
+    public ResponseEntity updateVisibility(@RequestBody PageVisibility pageVisibility) {
+        userService.setVisibility(pageVisibility.getUsername(), pageVisibility.isFriendOnlyPage(), pageVisibility.isAuthorizedOnlyPage());
+        return new ResponseEntity("about me updated", HttpStatus.CREATED);
     }
 }

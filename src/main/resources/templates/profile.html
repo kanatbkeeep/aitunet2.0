@@ -28,6 +28,22 @@
             <div class="aboutMeBox">
                 <div class="aboutMeH">about me</div>
                 <span role="textbox" class="textInput" contenteditable id="aboutMeInfo"></span>
+
+                <div class="switchBox">
+                    <label class="switch">
+                        <input type="checkbox" id="friendOnlyPage">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="switchText">visible only for friends page</span>
+                </div>
+
+                <div class="switchBox">
+                    <label class="switch">
+                        <input type="checkbox" id="authorizedOnlyPage">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="switchText">visible only for authorized page</span>
+                </div>
                 <button class="updateButton" id="updateAboutMe">save info</button>
             </div>
         </div>
@@ -127,6 +143,8 @@
                     console.log(result);
                     userId = result.id
                     $('#aboutMeInfo').html(result.aboutMe);
+                    $( "#friendOnlyPage" ).prop( "checked", result.friendOnlyPage );
+                    $( "#authorizedOnlyPage" ).prop( "checked", result.authorizedOnlyPage );
 
                     $.ajax({
                         type: "GET",
@@ -219,10 +237,20 @@
             console.log(newValue)
             $.ajax({
                 type: "POST",
-                headers: {'Authorization': myCookie},
                 contentType: 'application/json',
                 url: "user/updateAboutMe",
                 data: JSON.stringify({username: username, newValue: newValue}),
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result.responseText);
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json',
+                url: "user/updateVisibility",
+                data: JSON.stringify({username: username, friendOnlyPage: $('#friendOnlyPage').is(":checked"), authorizedOnlyPage : $('#authorizedOnlyPage').is(":checked")}),
                 dataType: 'json',
                 complete: function (result) {
                     console.log(result.responseText);
