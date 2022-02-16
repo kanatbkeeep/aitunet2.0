@@ -6,10 +6,7 @@ import com.aituNet.aituNet.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,9 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping("/save")
+    @PostMapping("/send")
     public ResponseEntity saveComment(@RequestBody Comment comment) {
         commentService.saveComment(comment);
         return new ResponseEntity("Comment saved", HttpStatus.CREATED);
+    }
+    @GetMapping("/show")
+    public ResponseEntity ShowCommentByPost(@RequestParam Integer id) {
+        return ResponseEntity.ok().body(commentService.ShowCommentsByPostId(id));
     }
 }
