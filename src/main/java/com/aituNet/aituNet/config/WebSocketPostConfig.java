@@ -12,7 +12,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketPostConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(final StompEndpointRegistry registry) {
-        registry.addEndpoint("/post").withSockJS();
+        registry.addEndpoint("/ws").withSockJS();
 
     }
 
