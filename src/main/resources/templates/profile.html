@@ -126,6 +126,7 @@
     });
 
     function send(postId,userId){
+        console.log(postId)
         let text = document.getElementById(postId+"p").innerText
         let name = document.getElementById("myName").innerText
         console.log("name: "+name + ", text: "+text+", userId: "+userId+", postId: "+ postId)
@@ -341,7 +342,7 @@
                     let date = post.date;
                     let time = post.time;
                     let text = post.textOfPost;
-                    let idPost = data.id;
+                    let idPost = post.id;
                     if(post.authorId == userId) {
                         $('.postsList').prepend(
                             '<div class="post" id="">' +
@@ -369,9 +370,9 @@
                             '<div class="textComments">COMMENTS</div>'+
                             '<div class="commentBox">'+
                             '<div class="commentSend">'+
-                            '<span role="textbox" contenteditable class="inputComment" id="'+data.id+'p">'+
+                            '<span role="textbox" contenteditable class="inputComment" id="'+idPost+'p">'+
                             '</span>'+
-                            '<button class="sendButton" onclick="send('+data.id+','+userId+')">'+'SEND</button>'+
+                            '<button class="sendButton" onclick="send('+idPost+','+userId+')">'+'SEND</button>'+
                             '</div>'+
                             '<div class="commentList'+idPost+'">'+
 
