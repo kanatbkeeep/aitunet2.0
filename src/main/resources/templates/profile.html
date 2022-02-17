@@ -20,7 +20,6 @@
     <div class="profileTop">
         <div class="avatarBox">
             <div class="profileAvatar"></div>
-            <div class="changeAvatar">change photo</div>
         </div>
 
         <div class="infoBox">
@@ -195,7 +194,7 @@
                                 if (userId == item.authorId) {
                                     if (getCookie("Authorization") != null) {
                                         $('.postsList').append(
-                                            '<div class="post" id="">' +
+                                            '<div class="post postId' + id + '" id="">' +
                                             '<div class="postTop">' +
                                             '<a class="avatarUsername" href="#">' +
                                             '<div class="avatar"></div>' +
@@ -216,21 +215,53 @@
                                             '</div>' +
                                             '</div>' +
                                             '<div class="postBottom">' +
-                                            text +'</div>'+
-                                            '<div class="textComments">COMMENTS</div>'+
-                                            '<div class="commentBox">'+
-                                            '<div class="commentSend">'+
-                                            '<span role="textbox" contenteditable class="inputComment" id="'+item.id+'p">'+
-                                            '</span>'+
-                                            '<button class="sendButton" onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
-                                            '</div>'+
-                                            '<div class="commentList'+idPost+'">'+
-
-                                            '</div>'+
-                                            '</div>'+
-                                            '</div>' +
-                                            '</div>'
+                                            text +'</div>'
                                         );
+
+                                        if (!item.removeComment) {
+                                            let url = '.postId' + id
+                                            $(url).append(
+                                                '<div class="textComments">COMMENTS</div>'+
+                                                '<div class="commentBox">'+
+                                                '<div class="commentSend">'+
+                                                '<span role="textbox" contenteditable class="inputComment" id="'+item.id+'p">'+
+                                                '</span>'+
+                                                '<button class="sendButton" onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
+                                                '</div>'+
+                                                '<div class="commentList'+idPost+'">'+
+
+                                                '</div>'+
+                                                '</div>'+
+                                                '</div>' +
+                                                '</div>'
+                                            )
+
+                                            $.ajax({
+                                                type: "GET",
+                                                contentType: 'application/json',
+                                                url: "comment/show",
+                                                data: {id: idPost},
+                                                dataType: 'json',
+                                                success: function (result3) {
+                                                    let url = ".commentList"+idPost
+                                                    result3.forEach(item2 =>{
+                                                        $(url).prepend(
+                                                            '<div class="comment">'+
+                                                            '<a class="userComment" href="/user?id='+item2.userId+'">'+
+                                                            '<div class="avatarComment">'+'</div>' +
+                                                            '<div class="nameComment">'+item2.username+'</div>' +
+                                                            '</a>'+
+                                                            '<div class="textCms">'+item2.text+'</div>'+
+                                                            '</div>'
+                                                        );
+                                                    })
+                                                    console.log("itemId: "+idPost)
+                                                },
+                                                error: function (e) {
+                                                    console.log("ERROR: ", e);
+                                                }
+                                            });
+                                        }
                                     }else{
                                         $('.postsList').append(
                                             '<div class="post" id="">' +
@@ -254,44 +285,49 @@
                                             '</div>' +
                                             '</div>' +
                                             '<div class="postBottom">' +
-                                            text +'</div>'+
-                                            '<div class="textComments">COMMENTS</div>'+
-                                            '<div class="commentBox">'+
-                                            '<div class="commentList'+idPost+'">'+
-
-                                            '</div>'+
-                                            '</div>'+
-                                            '</div>' +
-                                            '</div>'
+                                            text +'</div>'
                                         );
-                                    }
 
+                                        if (!item.removeComment) {
+                                            let url = '.postId' + id
+                                            $(url).append(
+                                                '<div class="textComments">COMMENTS</div>'+
+                                                '<div class="commentBox">'+
+                                                '<div class="commentList'+idPost+'">'+
 
-                                    $.ajax({
-                                        type: "GET",
-                                        contentType: 'application/json',
-                                        url: "comment/show",
-                                        data: {id: idPost},
-                                        dataType: 'json',
-                                        success: function (result3) {
-                                            let url = ".commentList"+idPost
-                                            result3.forEach(item2 =>{
-                                                $(url).prepend(
-                                                    '<div class="comment">'+
-                                                    '<a class="userComment" href="/user?id='+item2.userId+'">'+
-                                                    '<div class="avatarComment">'+'</div>' +
-                                                    '<div class="nameComment">'+item2.username+'</div>' +
-                                                    '</a>'+
-                                                    '<div class="textCms">'+item2.text+'</div>'+
-                                                    '</div>'
-                                                );
-                                            })
-                                            console.log("itemId: "+idPost)
-                                        },
-                                        error: function (e) {
-                                            console.log("ERROR: ", e);
+                                                '</div>'+
+                                                '</div>'+
+                                                '</div>' +
+                                                '</div>'
+                                            )
+
+                                            $.ajax({
+                                                type: "GET",
+                                                contentType: 'application/json',
+                                                url: "comment/show",
+                                                data: {id: idPost},
+                                                dataType: 'json',
+                                                success: function (result3) {
+                                                    let url = ".commentList"+idPost
+                                                    result3.forEach(item2 =>{
+                                                        $(url).prepend(
+                                                            '<div class="comment">'+
+                                                            '<a class="userComment" href="/user?id='+item2.userId+'">'+
+                                                            '<div class="avatarComment">'+'</div>' +
+                                                            '<div class="nameComment">'+item2.username+'</div>' +
+                                                            '</a>'+
+                                                            '<div class="textCms">'+item2.text+'</div>'+
+                                                            '</div>'
+                                                        );
+                                                    })
+                                                    console.log("itemId: "+idPost)
+                                                },
+                                                error: function (e) {
+                                                    console.log("ERROR: ", e);
+                                                }
+                                            });
                                         }
-                                    });
+                                    }
                                 }
                             });
                         },
@@ -353,7 +389,7 @@
                     let idPost = post.id;
                     if(post.authorId == userId) {
                         $('.postsList').prepend(
-                            '<div class="post" id="">' +
+                            '<div class="post postId' + idPost + '" id="">' +
                             '<div class="postTop">' +
                             '<a class="avatarUsername" href="#">' +
                             '<div class="avatar"></div>' +
@@ -374,46 +410,53 @@
                             '</div>' +
                             '</div>' +
                             '<div class="postBottom">' +
-                            text +'</div>'+
-                            '<div class="textComments">COMMENTS</div>'+
-                            '<div class="commentBox">'+
-                            '<div class="commentSend">'+
-                            '<span role="textbox" contenteditable class="inputComment" id="'+idPost+'p">'+
-                            '</span>'+
-                            '<button class="sendButton" onclick="send('+idPost+','+userId+')">'+'SEND</button>'+
-                            '</div>'+
-                            '<div class="commentList'+idPost+'">'+
-
-                            '</div>'+
-                            '</div>'+
-                            '</div>' +
-                            '</div>'
+                            text +'</div>'
                         );
-                        $.ajax({
-                            type: "GET",
-                            contentType: 'application/json',
-                            url: "comment/show",
-                            data: {id: idPost},
-                            dataType: 'json',
-                            success: function (result3) {
-                                let url = ".commentList"+idPost
-                                result3.forEach(item2 =>{
-                                    $(url).prepend(
-                                        '<div class="comment">'+
-                                        '<a class="userComment" href="/user?id='+item2.userId+'">'+
-                                        '<div class="avatarComment">'+'</div>' +
-                                        '<div class="nameComment">'+item2.username+'</div>' +
-                                        '</a>'+
-                                        '<div class="textCms">'+item2.text+'</div>'+
-                                        '</div>'
-                                    );
-                                })
-                                console.log("itemId: "+idPost)
-                            },
-                            error: function (e) {
-                                console.log("ERROR: ", e);
-                            }
-                        });
+
+                        if (!post.removeComment) {
+                            let url = '.postId' + idPost
+                            $(url).append(
+                                '<div class="textComments">COMMENTS</div>'+
+                                '<div class="commentBox">'+
+                                '<div class="commentSend">'+
+                                '<span role="textbox" contenteditable class="inputComment" id="'+post.id+'p">'+
+                                '</span>'+
+                                '<button class="sendButton" onclick="send('+post.id+','+userId+')">'+'SEND</button>'+
+                                '</div>'+
+                                '<div class="commentList'+idPost+'">'+
+
+                                '</div>'+
+                                '</div>'+
+                                '</div>' +
+                                '</div>'
+                            )
+
+                            $.ajax({
+                                type: "GET",
+                                contentType: 'application/json',
+                                url: "comment/show",
+                                data: {id: idPost},
+                                dataType: 'json',
+                                success: function (result3) {
+                                    let url = ".commentList"+idPost
+                                    result3.forEach(item2 =>{
+                                        $(url).prepend(
+                                            '<div class="comment">'+
+                                            '<a class="userComment" href="/user?id='+item2.userId+'">'+
+                                            '<div class="avatarComment">'+'</div>' +
+                                            '<div class="nameComment">'+item2.username+'</div>' +
+                                            '</a>'+
+                                            '<div class="textCms">'+item2.text+'</div>'+
+                                            '</div>'
+                                        );
+                                    })
+                                    console.log("itemId: "+idPost)
+                                },
+                                error: function (e) {
+                                    console.log("ERROR: ", e);
+                                }
+                            });
+                        }
                         console.log(data)
                     }
                 })
