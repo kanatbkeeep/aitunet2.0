@@ -338,6 +338,10 @@
 
 
                     const post = JSON.parse(data.body);
+                    let date = post.date;
+                    let time = post.time;
+                    let text = post.textOfPost;
+                    let idPost = data.id;
                     if(post.authorId == userId) {
                         $('.postsList').prepend(
                             '<div class="post" id="">' +
@@ -350,19 +354,57 @@
                             '</a>' +
                             '<div class="postTopLeft">' +
                             '<div class="date">' +
-                            post.time +
+                            date + ' ' +
+                            time +
                             '</div>' +
                             '<div class="postMenu">. . .' +
                             '<div class="postHiddenMenu">' +
+                            '<a href="/editPost?id=' + idPost + '"id="' + idPost + '" class="edit">edit</a>' +
                             '</div>' +
                             '</div>' +
                             '</div>' +
                             '</div>' +
                             '<div class="postBottom">' +
-                            post.textOfPost +
+                            text +'</div>'+
+                            '<div class="textComments">COMMENTS</div>'+
+                            '<div class="commentBox">'+
+                            '<div class="commentSend">'+
+                            '<span role="textbox" contenteditable class="inputComment" id="'+data.id+'p">'+
+                            '</span>'+
+                            '<button class="sendButton" onclick="send('+data.id+','+userId+')">'+'SEND</button>'+
+                            '</div>'+
+                            '<div class="commentList'+idPost+'">'+
+
+                            '</div>'+
+                            '</div>'+
                             '</div>' +
                             '</div>'
                         );
+                        $.ajax({
+                            type: "GET",
+                            contentType: 'application/json',
+                            url: "comment/show",
+                            data: {id: idPost},
+                            dataType: 'json',
+                            success: function (result3) {
+                                let url = ".commentList"+idPost
+                                result3.forEach(item2 =>{
+                                    $(url).prepend(
+                                        '<div class="comment">'+
+                                        '<a class="userComment" href="/user?id='+item2.userId+'">'+
+                                        '<div class="avatarComment">'+'</div>' +
+                                        '<div class="nameComment">'+item2.username+'</div>' +
+                                        '</a>'+
+                                        '<div class="textCms">'+item2.text+'</div>'+
+                                        '</div>'
+                                    );
+                                })
+                                console.log("itemId: "+idPost)
+                            },
+                            error: function (e) {
+                                console.log("ERROR: ", e);
+                            }
+                        });
                         console.log(data)
                     }
                 })
@@ -405,18 +447,30 @@
             console.log("button tapped")
             let textOfPost = document.getElementById("postContent").innerText;
             let today = new Date();
+            let newId;
 
             if (stompClient) {
-                const chatMessage = {
-                    textOfPost: textOfPost,
-                    authorId: userId,
-                    date: pad(today.getDate()) + '/' + pad((today.getMonth() + 1)) + '/' + today.getFullYear(),
-                    time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds()),
-                    friendsOnly : $('#friendOnly').is(":checked"),
-                    authorizedOnly : $('#authorizedOnly').is(":checked"),
-                }
-                stompClient.send("/app/ws.send", {}, JSON.stringify(chatMessage))
+                $.ajax({
+                    type: "GET",
+                    headers: {'Authorization': myCookie},
+                    contentType: 'application/json',
+                    url: "user/getUserByUsername",
+                    data: {username: username},
+                    dataType: 'json',
+                    success: function (result) {
+                        newId = result.id
+                        const chatMessage = {
+                            textOfPost: textOfPost,
+                            authorId: newId,
+                            date: pad(today.getDate()) + '/' + pad((today.getMonth() + 1)) + '/' + today.getFullYear(),
+                            time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds()),
+                            friendsOnly : $('#friendOnly').is(":checked"),
+                            authorizedOnly : $('#authorizedOnly').is(":checked"),
+                        }
+                        stompClient.send("/app/ws.send", {}, JSON.stringify(chatMessage))
 
+                    }
+                });
             }
         });
 
