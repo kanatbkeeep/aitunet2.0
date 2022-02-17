@@ -82,6 +82,14 @@
         </label>
         <span class="switchText">authorized only</span>
     </div>
+
+    <div class="switchBox">
+        <label class="switch">
+            <input type="checkbox" id="removeComment">
+            <span class="slider round"></span>
+        </label>
+        <span class="switchText">remove comment</span>
+    </div>
     <button class="updateButton" id="addPost">add post</button>
 </section>
 
@@ -468,6 +476,7 @@
                             time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds()),
                             friendsOnly : $('#friendOnly').is(":checked"),
                             authorizedOnly : $('#authorizedOnly').is(":checked"),
+                            removeComment : $('#removeComment').is(":checked")
                         }
                         stompClient.send("/app/ws.send", {}, JSON.stringify(chatMessage))
 

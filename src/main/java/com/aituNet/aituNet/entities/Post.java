@@ -27,4 +27,5 @@ public class Post {
     private String time;
     private boolean friendsOnly;
     private boolean authorizedOnly;
+    private boolean removeComment;
 }
