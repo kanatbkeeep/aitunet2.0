@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +49,14 @@ public class PostController {
     @GetMapping("/getPostByIdParam")
     public ResponseEntity<Post> getPostById(@RequestParam Integer postId) {
         return ResponseEntity.ok().body(postService.findPostById(postId));
+    }
+
+    @MessageMapping("/ws.send")
+    @SendTo("/topic/ws")
+    public Post sendPost(@Payload final Post post) {
+        System.out.println("send post func ");
+        postService.savePost(post);
+        return post;
     }
 
     @GetMapping("/getAll")

@@ -134,6 +134,111 @@
             }
         });
 
+        socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({},function(frame) {
+            stompClient.subscribe("/topic/ws", function (data) {
+                const post = JSON.parse(data.body);
+
+                $.ajax({
+                    type: "GET",
+                    contentType: 'application/json',
+                    url: "post/getPostByIdParam",
+                    data: {
+                        postId: post.id
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        let text = result.textOfPost;
+                        let date = result.date;
+                        let time = result.time;
+                        if (result.friendsOnly) {
+                            $.ajax({
+                                type: "GET",
+                                contentType: 'application/json',
+                                url: "user/getUserByUsername",
+                                data: {username: myUsername},
+                                dataType: 'json',
+                                success: function (result2) {
+                                    let userId = result2.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        contentType: 'application/json',
+                                        url: "friends/showBoth",
+                                        data: {ownerId: userId, friendId: result.authorId},
+                                        dataType: 'json',
+                                        success: function (result3) {
+                                            $.ajax({
+                                                type: "GET",
+                                                contentType: 'application/json',
+                                                url: "user/getUserById",
+                                                data: {id: result.authorId},
+                                                dataType: 'json',
+                                                success: function (result4) {
+                                                    $('.postsList').prepend(
+                                                        '<div class="post">' +
+                                                        '<div class="postTop">' +
+                                                        '<a class="avatarUsername" href="/user?id='+ result.authorId + '" id="' + result.authorId + '">' +
+                                                        '<div class="avatar"></div>' +
+                                                        '<div class="username">'+ result4.username +'</div>' +
+                                                        '</a>' +
+                                                        '<div class="date">' + date + ' ' + time + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="postBottom">' + text + '</div>' +
+                                                        '</div>'
+                                                    );
+                                                    console.log(result)
+                                                },
+                                                error: function (e) {
+                                                    console.log("ERROR: ", e);
+                                                }
+                                            })
+                                        },
+                                        error: function (e) {
+                                            console.log("не друг", e);
+                                        }
+                                    })
+                                },
+                                error: function (e) {
+                                    console.log("по юзернейму не нашел", e);
+                                }
+                            })
+
+                        } else {
+                            $.ajax({
+                                type: "GET",
+                                contentType: 'application/json',
+                                url: "user/getUserById",
+                                data: {id: result.authorId},
+                                dataType: 'json',
+                                success: function (result2) {
+                                    $('.postsList').prepend(
+                                        '<div class="post">' +
+                                        '<div class="postTop">' +
+                                        '<a class="avatarUsername" href="/user?id='+ result.authorId + '" id="' + result.authorId + '">' +
+                                        '<div class="avatar"></div>' +
+                                        '<div class="username">'+ result2.username +'</div>' +
+                                        '</a>' +
+                                        '<div class="date">' + date + ' ' + time + '</div>' +
+                                        '</div>' +
+                                        '<div class="postBottom">' + text + '</div>' +
+                                        '</div>'
+                                    );
+                                    console.log(result)
+                                },
+                                error: function (e) {
+                                    console.log("ERROR: ", e);
+                                }
+                            });
+                        }
+                    },
+                    error: function (e) {
+                        console.log("ERROR: ", e);
+                    }
+                });
+
+            })
+        })
 
     }
 
@@ -273,6 +378,9 @@
                 console.log("ERROR: ", e);
             }
         });
+
+
+
     });
 </script>
 </body>
