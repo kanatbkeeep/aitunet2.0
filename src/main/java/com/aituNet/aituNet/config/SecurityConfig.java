@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/friends",
                 "/**"
         ).permitAll();
-
+        http.authorizeRequests().antMatchers("/user/updateAboutMe").hasAnyAuthority( "ROLE_USER");
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
