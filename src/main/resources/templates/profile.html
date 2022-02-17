@@ -93,7 +93,13 @@
 </section>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script type="text/javascript">
+
+    let stompClient
+    let socket
+
     function parseJwt(token) {
         let base64Url = token.split('.')[1];
         let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -280,6 +286,45 @@
                     console.log("ERROR: ", e);
                 }
             });
+
+            console.log("SADASd");
+            socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({},function(frame) {
+                stompClient.subscribe("/topic/ws", function (data) {
+
+
+                    const post = JSON.parse(data.body);
+                    if(post.authorId == userId) {
+                        $('.postsList').prepend(
+                            '<div class="post" id="">' +
+                            '<div class="postTop">' +
+                            '<a class="avatarUsername" href="#">' +
+                            '<div class="avatar"></div>' +
+                            '<div class="username">' +
+                            username +
+                            '</div>' +
+                            '</a>' +
+                            '<div class="postTopLeft">' +
+                            '<div class="date">' +
+                            post.time +
+                            '</div>' +
+                            '<div class="postMenu">. . .' +
+                            '<div class="postHiddenMenu">' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="postBottom">' +
+                            post.textOfPost +
+                            '</div>' +
+                            '</div>'
+                        );
+                        console.log(data)
+                    }
+                })
+            })
+
         }
 
         $('#updateAboutMe').on('click', function () {
@@ -312,7 +357,27 @@
             return ('00' + num).slice(-2)
         };
 
+
         $('#addPost').on('click', function () {
+            console.log("button tapped")
+            let textOfPost = document.getElementById("postContent").innerText;
+            let today = new Date();
+
+            if (stompClient) {
+                const chatMessage = {
+                    textOfPost: textOfPost,
+                    authorId: userId,
+                    date: pad(today.getDate()) + '/' + pad((today.getMonth() + 1)) + '/' + today.getFullYear(),
+                    time: pad(today.getHours()) + ":" + pad(today.getMinutes()) + ":" + pad(today.getSeconds()),
+                    friendsOnly : $('#friendOnly').is(":checked"),
+                    authorizedOnly : $('#authorizedOnly').is(":checked"),
+                }
+                stompClient.send("/app/ws.send", {}, JSON.stringify(chatMessage))
+
+            }
+        });
+
+       /* $('#addPost').on('click', function () {
             let textOfPost = document.getElementById("postContent").innerText;
             let today = new Date();
             $.ajax({
@@ -334,7 +399,7 @@
                     document.location.reload();
                 }
             });
-        });
+        });*/
     })
 </script>
 </body>
