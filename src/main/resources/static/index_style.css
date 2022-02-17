@@ -1,7 +1,10 @@
 html {
     font-family: "Montserrat", serif;
 }
-
+a{
+    text-decoration:none;
+    color: black;
+}
 body {
     margin: 0;
     background-color: #F6F6F6;
@@ -118,13 +121,18 @@ header {
 .seeMore {
     text-align: center;
 }
+.textComments{
+    font-size: 30px;
+    color: #4E5DA5;
+}
 .commentBox{
     display: flex;
     flex-direction: column;
 }
 .commentSend{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    position: relative;
 }
 .commentList{
     display: flex;
@@ -132,6 +140,57 @@ header {
 }
 .inputComment{
     border: 1px solid black;
-    width: 50px;
-    height: 30px;
+    width: 450px;
+    min-height: 30px;
+    max-heightheight: 100px;
+    margin-right: 100px;
+}
+.sendButton{
+    position: absolute;
+    width: 120px;
+    height: 40px;
+    border-radius: 50px;
+    background: white;
+    left: 55%;
+    top: 0;
+    transition: 0.3s ease;
+}
+.sendButton:hover{
+    border: solid 2px black;
+    color: white;
+    background: #4E5DA5;
+}
+.comment:first-child{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.comment{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.userComment{
+    display: flex;
+    flex-direction: row;
+}
+.avatarComment{
+    width: 60px;
+    height: 60px;
+    background-color: #4E5DA5;
+    border-radius: 50px;
+}
+.nameComment{
+    margin-top: 5px;
+    margin-left: 5px;
+    font-family: "Montserrat", serif;
+    font-size: 25px;
+}
+.textCms{
+    margin-top: 5px;
+    margin-left: 5px;
+    font-family: "Montserrat", serif;
+    font-size: 20px;
 }

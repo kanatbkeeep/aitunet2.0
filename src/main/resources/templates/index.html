@@ -139,11 +139,12 @@
                                                         '<div class="date">' + date + ' ' + time + '</div>' +
                                                         '</div>' +
                                                         '<div class="postBottom">' + text + '</div>' +
+                                                        '<div class="textComments">COMMENTS</div>'+
                                                         '<div class="commentBox">'+
                                                         '<div class="commentSend">'+
                                                         '<span role="textbox" contenteditable class="inputComment" id="'+item.id+'p">'+
                                                         '</span>'+
-                                                        '<button onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
+                                                        '<button class="sendButton" onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
                                                         '</div>'+
                                                         '<div class="commentList'+idPost+'">'+
 
@@ -162,8 +163,13 @@
                                                             let url = ".commentList"+idPost
                                                             result3.forEach(item2 =>{
                                                                 $(url).prepend(
-                                                                    '<div>'+item2.username+'</div>' +
-                                                                    '<div>'+item2.text+" postID: "+item2.postId+'</div>'
+                                                                    '<div class="comment">'+
+                                                                    '<a class="userComment" href="/user?id='+item2.userId+'">'+
+                                                                    '<div class="avatarComment">'+'</div>' +
+                                                                    '<div class="nameComment">'+item2.username+'</div>' +
+                                                                    '</a>'+
+                                                                    '<div class="textCms">'+item2.text+'</div>'+
+                                                                    '</div>'
                                                                 );
                                                             })
                                                             console.log("itemId: "+idPost)
@@ -205,11 +211,12 @@
                                                             '<div class="date">' + date + ' ' + time + '</div>' +
                                                             '</div>' +
                                                             '<div class="postBottom">' + text + '</div>' +
+                                                            '<div class="textComments">COMMENTS</div>'+
                                                             '<div class="commentBox">'+
                                                             '<div class="commentSend">'+
                                                             '<span role="textbox" contenteditable class="inputComment" id="'+item.id+'p">'+
                                                             '</span>'+
-                                                            '<button onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
+                                                            '<button class="sendButton" onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
                                                             '</div>'+
                                                             '<div class="commentList'+idPost+'">'+
 
@@ -228,8 +235,13 @@
                                                                 let url = ".commentList"+idPost
                                                                 result3.forEach(item2 =>{
                                                                     $(url).prepend(
-                                                                        '<div>'+item2.username+'</div>' +
-                                                                        '<div>'+item2.text+" postID: "+item2.postId+'</div>'
+                                                                        '<div class="comment">'+
+                                                                        '<a class="userComment" href="/user?id='+item2.userId+'">'+
+                                                                        '<div class="avatarComment">'+'</div>' +
+                                                                        '<div class="nameComment">'+item2.username+'</div>' +
+                                                                        '</a>'+
+                                                                        '<div class="textCms">'+item2.text+'</div>'+
+                                                                        '</div>'
                                                                     );
                                                                 })
                                                                 console.log("itemId: "+idPost)
@@ -274,11 +286,12 @@
                                                     '<div class="date">' + date + ' ' + time + '</div>' +
                                                     '</div>' +
                                                     '<div class="postBottom">' + text + '</div>' +
+                                                    '<div class="textComments">COMMENTS</div>'+
                                                     '<div class="commentBox">'+
                                                     '<div class="commentSend">'+
                                                     '<span role="textbox" contenteditable class="inputComment" id="'+item.id+'p">'+
                                                     '</span>'+
-                                                    '<button onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
+                                                    '<button  class="sendButton" onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
                                                     '</div>'+
                                                     '<div class="commentList'+idPost+'">'+
 
@@ -297,8 +310,13 @@
                                                         let url = ".commentList"+idPost
                                                         result3.forEach(item2 =>{
                                                             $(url).prepend(
-                                                                '<div>'+item2.username+'</div>' +
-                                                                '<div>'+item2.text+" postID: "+item2.postId+'</div>'
+                                                                '<div class="comment">'+
+                                                                '<a class="userComment" href="/user?id='+item2.userId+'">'+
+                                                                '<div class="avatarComment">'+'</div>' +
+                                                                '<div class="nameComment">'+item2.username+'</div>' +
+                                                                '</a>'+
+                                                                '<div class="textCms">'+item2.text+'</div>'+
+                                                                '</div>'
                                                             );
                                                         })
                                                         console.log("itemId: "+idPost)
@@ -332,11 +350,12 @@
                                                 '<div class="date">' + date + ' ' + time + '</div>' +
                                                 '</div>' +
                                                 '<div class="postBottom">' + text + '</div>' +
+                                                '<div class="textComments">COMMENTS</div>'+
                                                 '<div class="commentBox">'+
                                                 '<div class="commentSend">'+
                                                 '<span role="textbox" contenteditable class="inputComment" id="'+item.id+'p">'+
                                                 '</span>'+
-                                                '<button onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
+                                                '<button class="sendButton" onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
                                                 '</div>'+
                                                 '<div class="commentList'+idPost+'">'+
 
@@ -355,8 +374,13 @@
                                                     let url = ".commentList"+idPost
                                                     result3.forEach(item2 =>{
                                                         $(url).prepend(
-                                                            '<div>'+item2.username+'</div>' +
-                                                            '<div>'+item2.text+" postID: "+item2.postId+'</div>'
+                                                            '<div class="comment">'+
+                                                            '<a class="userComment" href="/user?id='+item2.userId+'">'+
+                                                            '<div class="avatarComment">'+'</div>' +
+                                                            '<div class="nameComment">'+item2.username+'</div>' +
+                                                            '</a>'+
+                                                            '<div class="textCms">'+item2.text+'</div>'+
+                                                            '</div>'
                                                         );
                                                     })
                                                     console.log("itemId: "+idPost)
