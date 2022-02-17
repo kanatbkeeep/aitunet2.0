@@ -1,0 +1,38 @@
+html {
+    font-family: "Montserrat", serif;
+}
+
+body {
+    margin: 0;
+    background-color: #F6F6F6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    width: calc(100% - 80px);
+    padding: 0 40px;
+    align-items: center;
+    background-color: white;
+}
+
+.logo {
+    text-decoration: none;
+    color: #4E5DA5;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.headerRight {
+    display: flex;
+}
+
+.errorMassage {
+    margin-top: 60px;
+    font-family: "Montserrat Black", serif;
+    font-size: 50px;
+}
