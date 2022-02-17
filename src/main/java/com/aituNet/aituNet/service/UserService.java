@@ -16,4 +16,5 @@ public interface UserService {
     void updateAboutMe(String username, String aboutMe);
     boolean exitUser(String username);
     User getUserById(Integer id);
+    User setVisibility(String username, boolean friendOnlyPage, boolean authorizedOnlyPage);
 }

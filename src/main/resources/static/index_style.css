@@ -118,3 +118,20 @@ header {
 .seeMore {
     text-align: center;
 }
+.commentBox{
+    display: flex;
+    flex-direction: column;
+}
+.commentSend{
+    display: flex;
+    flex-direction: column;
+}
+.commentList{
+    display: flex;
+    flex-direction: column;
+}
+.inputComment{
+    border: 1px solid black;
+    width: 50px;
+    height: 30px;
+}

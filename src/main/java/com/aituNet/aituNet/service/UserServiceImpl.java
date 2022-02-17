@@ -84,6 +84,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User setVisibility(String username, boolean friendOnlyPage, boolean authorizedOnlyPage) {
+        User user = userRepo.findByUsername(username);
+        user.setFriendOnlyPage(friendOnlyPage);
+        user.setAuthorizedOnlyPage(authorizedOnlyPage);
+        return userRepo.save(user);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
         if(user == null) {

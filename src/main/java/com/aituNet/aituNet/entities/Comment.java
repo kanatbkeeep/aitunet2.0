@@ -23,10 +23,10 @@ public class Comment {
     @Column(nullable = false)
     private String text;
     private String username;
-    private Long postId;
-    private Long userId;
+    private Integer postId;
+    private Integer userId;
 
-    public Comment(String text, String username, Long userId, Long postId) {
+    public Comment(String text, String username, Integer userId, Integer postId) {
         this.text = text;
         this.username = username;
         this.userId = userId;
