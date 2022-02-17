@@ -179,6 +179,7 @@
                 $('.myPostH').html(result.username + "'s post")
                 let friendOnlyPage = result.friendOnlyPage
                 let authorizedOnlyPage = result.authorizedOnlyPage
+                let userId
                 if (authorizedOnlyPage) {
                     if (getCookie("Authorization") == null) {
                         $('.myPostsBox').css("display", "none")
@@ -213,21 +214,6 @@
                         }
                     });
                 }
-
-                $.ajax({
-                    type: "GET",
-                    contentType: 'application/json',
-                    url: "user/getUserByUsername",
-                    data: {username: myUsername},
-                    dataType: 'json',
-                    success: function (result) {
-                        userId = result.id
-                        send(userId, new URL(window.location.href).searchParams.get('id'))
-                    },
-                    error: function (e) {
-                        console.log("ERROR: ", e);
-                    }
-                });
 
                 $.ajax({
                     type: "GET",

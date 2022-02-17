@@ -93,14 +93,7 @@
         $('.miniUsername').html(myUsername)
 
 
-        $.ajax({
-            type: "GET",
-            contentType: 'application/json',
-            url: "user/getUserByUsername",
-            data: {username: myUsername},
-            dataType: 'json',
-            success: function (result2) {
-                userId = result2.id;
+
                 $.ajax({
                     type: "GET",
                     contentType: 'application/json',
@@ -403,11 +396,7 @@
                         console.log("ERROR: ", e);
                     }
                 });
-            },
-            error: function (e) {
-                console.log("ERROR: ", e);
-            }
-        })
+
 
 
         socket = new SockJS('/ws');
