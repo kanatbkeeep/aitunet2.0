@@ -184,43 +184,80 @@
                                 let time = item.time;
                                 let idPost = item.id;
                                 if (userId == item.authorId) {
-                                    $('.postsList').append(
-                                        '<div class="post" id="">' +
-                                        '<div class="postTop">' +
-                                        '<a class="avatarUsername" href="#">' +
-                                        '<div class="avatar"></div>' +
-                                        '<div class="username">' +
-                                        username +
-                                        '</div>' +
-                                        '</a>' +
-                                        '<div class="postTopLeft">' +
-                                        '<div class="date">' +
-                                        date + ' ' +
-                                        time +
-                                        '</div>' +
-                                        '<div class="postMenu">. . .' +
-                                        '<div class="postHiddenMenu">' +
-                                        '<a href="/editPost?id=' + id + '"id="' + id + '" class="edit">edit</a>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '<div class="postBottom">' +
-                                        text +'</div>'+
-                                        '<div class="textComments">COMMENTS</div>'+
-                                        '<div class="commentBox">'+
-                                        '<div class="commentSend">'+
-                                        '<span role="textbox" contenteditable class="inputComment" id="'+item.id+'p">'+
-                                        '</span>'+
-                                        '<button class="sendButton" onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
-                                        '</div>'+
-                                        '<div class="commentList'+idPost+'">'+
+                                    if (getCookie("Authorization") != null) {
+                                        $('.postsList').append(
+                                            '<div class="post" id="">' +
+                                            '<div class="postTop">' +
+                                            '<a class="avatarUsername" href="#">' +
+                                            '<div class="avatar"></div>' +
+                                            '<div class="username">' +
+                                            username +
+                                            '</div>' +
+                                            '</a>' +
+                                            '<div class="postTopLeft">' +
+                                            '<div class="date">' +
+                                            date + ' ' +
+                                            time +
+                                            '</div>' +
+                                            '<div class="postMenu">. . .' +
+                                            '<div class="postHiddenMenu">' +
+                                            '<a href="/editPost?id=' + id + '"id="' + id + '" class="edit">edit</a>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '<div class="postBottom">' +
+                                            text +'</div>'+
+                                            '<div class="textComments">COMMENTS</div>'+
+                                            '<div class="commentBox">'+
+                                            '<div class="commentSend">'+
+                                            '<span role="textbox" contenteditable class="inputComment" id="'+item.id+'p">'+
+                                            '</span>'+
+                                            '<button class="sendButton" onclick="send('+item.id+','+userId+')">'+'SEND</button>'+
+                                            '</div>'+
+                                            '<div class="commentList'+idPost+'">'+
 
-                                        '</div>'+
-                                        '</div>'+
-                                        '</div>' +
-                                        '</div>'
-                                    );
+                                            '</div>'+
+                                            '</div>'+
+                                            '</div>' +
+                                            '</div>'
+                                        );
+                                    }else{
+                                        $('.postsList').append(
+                                            '<div class="post" id="">' +
+                                            '<div class="postTop">' +
+                                            '<a class="avatarUsername" href="#">' +
+                                            '<div class="avatar"></div>' +
+                                            '<div class="username">' +
+                                            username +
+                                            '</div>' +
+                                            '</a>' +
+                                            '<div class="postTopLeft">' +
+                                            '<div class="date">' +
+                                            date + ' ' +
+                                            time +
+                                            '</div>' +
+                                            '<div class="postMenu">. . .' +
+                                            '<div class="postHiddenMenu">' +
+                                            '<a href="/editPost?id=' + id + '"id="' + id + '" class="edit">edit</a>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '<div class="postBottom">' +
+                                            text +'</div>'+
+                                            '<div class="textComments">COMMENTS</div>'+
+                                            '<div class="commentBox">'+
+                                            '<div class="commentList'+idPost+'">'+
+
+                                            '</div>'+
+                                            '</div>'+
+                                            '</div>' +
+                                            '</div>'
+                                        );
+                                    }
+
+
                                     $.ajax({
                                         type: "GET",
                                         contentType: 'application/json',
