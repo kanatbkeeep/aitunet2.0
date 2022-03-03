@@ -21,11 +21,13 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public Application sendApplication(Application application) {
+        log.info("Request was sent to {} by {}",application.getSendTo(),application.getSendBy());
         return applicationRepo.save(application);
     }
 
     @Override
     public void deleteApplication(Integer id) {
+        log.info("Request was deleted");
         applicationRepo.deleteById(id.longValue());
 
     }

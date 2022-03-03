@@ -21,26 +21,32 @@ public class FriendServiceImpl implements FriendService{
 
     @Override
     public Friends addFriend(Friends friends) {
+
+        log.info("Friend {} added to {}",friends.getFriendId(),friends.getOwnerId());
         return friendsRepo.save(friends);
     }
 
     @Override
     public List<Friends> showFriends(Integer id) {
+        log.info("{}'s friends",id);
         return friendsRepo.findAllByOwnerId(id);
     }
 
     @Override
     public void deleteFriend(Integer Id) {
+
       Friends friend = friendsRepo.findById(Id.longValue()).orElse(null);
       if(friend == null){
 
       }else{
+          log.info("{} was deleted from friends",friend.getFriendId());
           friendsRepo.delete(friend);
       }
     }
 
     @Override
     public void deleteByOwnerIdAndFriendId(Integer owner, Integer friend) {
+        log.info("{} was deleted from friends",friend);
         friendsRepo.deleteByOwnerIdAndFriendId(owner,friend);
     }
 

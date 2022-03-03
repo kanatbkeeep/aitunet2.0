@@ -20,18 +20,21 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public Post savePost(Post post) {
+        log.info("Post was added by {}", post.getAuthorId());
         return postRepo.save(post);
     }
 
     @Override
     public void updatePost(Integer id, String text) {
         Post post = postRepo.findById(id.longValue()).orElse(null);
+        log.info("Post was updated by {}", post.getAuthorId());
         post.setTextOfPost(text);
     }
 
     @Override
     public void deletePost(Integer id) {
         Post post = postRepo.findById(id.longValue()).orElse(null);
+        log.info("Post was deleted");
         postRepo.delete(post);
     }
 
