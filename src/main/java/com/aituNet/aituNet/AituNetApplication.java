@@ -23,9 +23,6 @@ public class AituNetApplication {
     public static void main(String[] args) {
         SpringApplication.run(AituNetApplication.class, args);
 
-        LOGGER.info("Info level log message");
-        LOGGER.debug("Debug level log message");
-        LOGGER.error("Error level log message");
     }
     @Bean
     CommandLineRunner run(UserService userService) {

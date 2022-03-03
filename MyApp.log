@@ -1,0 +1,36 @@
+2022-03-03 16:50:11.727  INFO 17420 --- [restartedMain] com.aituNet.aituNet.AituNetApplication   : Starting AituNetApplication using Java 17 on DESKTOP-LK7VDPQ with PID 17420 (C:\Users\clash\OneDrive\Рабочий стол\aitunet2.0\target\classes started by clash in C:\Users\clash\OneDrive\Рабочий стол\aitunet2.0)
+2022-03-03 16:50:11.728  INFO 17420 --- [restartedMain] com.aituNet.aituNet.AituNetApplication   : No active profile set, falling back to default profiles: default
+2022-03-03 16:50:11.784  INFO 17420 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-03-03 16:50:11.785  INFO 17420 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-03-03 16:50:12.475  INFO 17420 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-03-03 16:50:12.555  INFO 17420 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 72 ms. Found 6 JPA repository interfaces.
+2022-03-03 16:50:13.078  INFO 17420 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-03-03 16:50:13.089  INFO 17420 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-03-03 16:50:13.089  INFO 17420 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.54]
+2022-03-03 16:50:13.188  INFO 17420 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-03-03 16:50:13.188  INFO 17420 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1403 ms
+2022-03-03 16:50:13.326  INFO 17420 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-03-03 16:50:13.389  INFO 17420 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2022-03-03 16:50:13.540  INFO 17420 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-03-03 16:50:13.645  INFO 17420 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-03-03 16:50:13.784  INFO 17420 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-03-03 16:50:13.805  INFO 17420 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-03-03 16:50:14.592  INFO 17420 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-03-03 16:50:14.599  INFO 17420 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-03-03 16:50:14.959  WARN 17420 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-03-03 16:50:15.219  INFO 17420 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@42a2837b, org.springframework.security.web.context.SecurityContextPersistenceFilter@1da46ca2, org.springframework.security.web.header.HeaderWriterFilter@25b31f9b, org.springframework.security.web.authentication.logout.LogoutFilter@759509f1, com.aituNet.aituNet.filter.CustomAuthorizationFilter@305494f4, com.aituNet.aituNet.filter.CustomAuthenticationFilter@2479aecb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3b9e4675, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4caf9cd1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5ebf0c36, org.springframework.security.web.session.SessionManagementFilter@729280e3, org.springframework.security.web.access.ExceptionTranslationFilter@5ac6b13d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7aa1c6a1]
+2022-03-03 16:50:15.471  INFO 17420 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-03-03 16:50:15.872  INFO 17420 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-03-03 16:50:15.937  INFO 17420 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-03-03 16:50:15.940  INFO 17420 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2022-03-03 16:50:15.940  INFO 17420 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@5f7dc0a0]]
+2022-03-03 16:50:15.940  INFO 17420 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2022-03-03 16:50:15.954  INFO 17420 --- [restartedMain] com.aituNet.aituNet.AituNetApplication   : Started AituNetApplication in 4.699 seconds (JVM running for 5.714)
+2022-03-03 16:50:15.969  INFO 17420 --- [restartedMain] c.a.aituNet.service.UserServiceImpl      : User asd added
+2022-03-03 16:50:16.121  INFO 17420 --- [restartedMain] c.aituNet.aituNet.entities.Application   : Info level log message
+2022-03-03 16:50:16.121 ERROR 17420 --- [restartedMain] c.aituNet.aituNet.entities.Application   : Error level log message
+2022-03-03 16:51:08.994  INFO 17420 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-03-03 16:51:08.995  INFO 17420 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-03-03 16:51:08.996  INFO 17420 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-03-03 16:51:15.343  INFO 17420 --- [MessageBroker-3] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 1 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(1)-CONNECTED(1)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 9, active threads = 0, queued tasks = 0, completed tasks = 9], outboundChannel[pool size = 2, active threads = 0, queued tasks = 0, completed tasks = 2], sockJsScheduler[pool size = 6, active threads = 1, queued tasks = 1, completed tasks = 2]
+2022-03-03 16:51:41.079  WARN 17420 --- [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' not supported]
